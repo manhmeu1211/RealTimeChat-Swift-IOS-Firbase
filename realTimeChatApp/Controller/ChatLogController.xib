@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ChatLogController" customModule="realTimeChatApp" customModuleProvider="target">
+            <connections>
+                <outlet property="chatLogCollection" destination="bfZ-A3-HtZ" id="uUJ-YA-d6E"/>
+                <outlet property="txtMessage" destination="Qcw-dl-xq0" id="aCi-QD-CTk"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Write message ..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Qcw-dl-xq0">
+                    <rect key="frame" x="10" y="812" width="344" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="BAU-0g-vT8"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="os5-fW-1zV">
+                    <rect key="frame" x="354" y="812" width="60" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="HHl-L2-Apf"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                    <state key="normal" title="Send"/>
+                    <connections>
+                        <action selector="btnSend:" destination="-1" eventType="touchUpInside" id="OAQ-iC-2St"/>
+                    </connections>
+                </button>
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="bfZ-A3-HtZ">
+                    <rect key="frame" x="10" y="44" width="394" height="672"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="DfL-zq-2U2">
+                        <size key="itemSize" width="50" height="50"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    </collectionViewFlowLayout>
+                </collectionView>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="bfZ-A3-HtZ" firstAttribute="height" secondItem="i5M-Pr-FkT" secondAttribute="height" multiplier="0.75" id="6Th-XV-0lN"/>
+                <constraint firstItem="os5-fW-1zV" firstAttribute="leading" secondItem="Qcw-dl-xq0" secondAttribute="trailing" id="AcM-iy-Lpm"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="bfZ-A3-HtZ" secondAttribute="trailing" constant="10" id="Tbj-dZ-wco"/>
+                <constraint firstItem="Qcw-dl-xq0" firstAttribute="bottom" secondItem="fnl-2z-Ty3" secondAttribute="bottom" id="WyE-IJ-5id"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Qcw-dl-xq0" secondAttribute="trailing" constant="60" id="c1M-1J-o8z"/>
+                <constraint firstItem="Qcw-dl-xq0" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="10" id="dEx-RP-g1v"/>
+                <constraint firstAttribute="trailing" secondItem="os5-fW-1zV" secondAttribute="trailing" id="hOU-Zr-ruw"/>
+                <constraint firstItem="bfZ-A3-HtZ" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="iBZ-Mw-5E9"/>
+                <constraint firstItem="bfZ-A3-HtZ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="10" id="jKu-vU-LD4"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="os5-fW-1zV" secondAttribute="bottom" id="pUq-Wa-2T9"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <point key="canvasLocation" x="131.8840579710145" y="118.52678571428571"/>
+        </view>
+    </objects>
+</document>

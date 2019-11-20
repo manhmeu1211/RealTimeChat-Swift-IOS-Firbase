@@ -1,0 +1,6 @@
+framework module Pods_realTimeChatApp {
+  umbrella header "Pods-realTimeChatApp-umbrella.h"
+
+  export *
+  module * { export * }
+}
