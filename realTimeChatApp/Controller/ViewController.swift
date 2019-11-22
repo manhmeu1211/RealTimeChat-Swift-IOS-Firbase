@@ -11,132 +11,111 @@ import Firebase
 
 class ViewController: UITableViewController {
     var messages = [Message]()
+    var messageDictionary = [String : Message]()
+    var timer : Timer?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "log-out.png"), style: UIBarButtonItem.Style.plain, target: self, action: #selector(handleLogout))
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "chat-2.png"), style: UIBarButtonItem.Style.plain, target: self, action: #selector(handleNewMessage))
-        tableView.separatorStyle = .none
-        tableView.register(UserCell.self, forCellReuseIdentifier: "cellid")
+        setUpTableView()
         checkIfUserLogged()
-        observeMessage()
+        setUpNavItem()
+    }
+    
+
+    
+    func setUpNavItem()  {
+          navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "log-out.png"), style: UIBarButtonItem.Style.plain, target: self, action: #selector(handleLogout))
+              navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "chat-2.png"), style: UIBarButtonItem.Style.plain, target: self, action: #selector(handleNewMessage))
+    }
+    
+    func setUpTableView(){
+        tableView.separatorStyle = .singleLine
+        tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 10).isActive = true
+        tableView.register(UserCell.self, forCellReuseIdentifier: "cellid")
+    }
+    
+    func observeUserMessages(){
+        
+        guard let uid = Auth.auth().currentUser?.uid else {
+            return
+        }
+        let ref = Database.database().reference().child("user-message").child(uid)
+        ref.observe(.childAdded, with: { (snapshot) in
+            let messageId = snapshot.key
+            let messageReference = Database.database().reference().child("message").child(messageId)
+            messageReference.observeSingleEvent(of: .value, with: { (snapshop) in
+                  if let dictionary = snapshop.value as? [String:Any] {
+                                let message = Message()
+                                message.fromID = dictionary["fromId"] as? String
+                                message.text = dictionary["text"] as? String
+                                message.timestamp = dictionary["timestamp"] as? String
+                                message.toId = dictionary["toId"] as? String
+                                if let toId = message.toId {
+                                    self.messageDictionary[toId] = message
+                                    self.messages = Array(self.messageDictionary.values)
+                                }
+                    self.timer?.invalidate()
+                    print("we just canceled our timer")
+                    self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleReloadTable), userInfo: nil, repeats: false)
+                    print("scheduled a table reload in 0.1 sec")
+                              
+                            }
+            }, withCancel: nil)
+        }, withCancel: nil)
         
     }
     
-    func observeMessage(){
-        let ref = Database.database().reference().child("message")
-        ref.observe(.childAdded, with: { (snapshot) in
-            if let dictionary = snapshot.value as? [String:Any] {
-                let message = Message()
-                message.fromID = dictionary["fromId"] as? String
-                message.text = dictionary["text"] as? String
-                message.timestamp = dictionary["timestamp"] as? String
-                message.toId = dictionary["toId"] as? String
-                self.messages.append(message)
-                print(message.timestamp)
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                }
-            }
+    @objc func handleReloadTable(){
+        DispatchQueue.main.async {
+            print("Reload table")
+            self.tableView.reloadData()
             
-            
-        }, withCancel: nil)
+        }
     }
-
+    
+   
     func checkIfUserLogged(){
         let uid = Auth.auth().currentUser?.uid
-               print(uid)
                if uid == nil {
                    perform(#selector(handleLogout), with: nil, afterDelay: 0)
                } else {
-              
             fectUserAndSetUpNavBarTitle()
         }
     }
     
+    
     func fectUserAndSetUpNavBarTitle(){
+        messages.removeAll()
+        messageDictionary.removeAll()
+        tableView.reloadData()
+        
+        observeUserMessages()
+        
         guard let uid = Auth.auth().currentUser?.uid else {
             return
         }
-        Database.database().reference().child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
-                          if let dictionary = snapshot.value as? [String: AnyObject]{
-                              
+        Database.database().reference().child("users").child(uid).observeSingleEvent(of: .value, with: { (userdata) in
+                          if let dictionary = userdata.value as? [String: AnyObject] {
                             let user = Users()
                             user.username = dictionary["username"] as? String
                             user.email = dictionary["email"] as? String
                             user.imageURL = dictionary["profileImage"] as? String
-                          
-                            self.navigationItem.title = user.username
-//                            self.setUpNavBarWithUser(user: user)
+                            self.navigationItem.title = "\(user.username!)"
                           }
-                          
                       }, withCancel: nil)
     }
-//
-//    func setUpNavBarWithUser(user : Users){
-//
-//        let titleView : UIView = UIView(frame: CGRect(x: 0, y: 0, width: 200, height: 100))
-//        titleView.backgroundColor = .red
-//
-//        let containerView = UIView()
-//        containerView.translatesAutoresizingMaskIntoConstraints = false
-//        titleView.addSubview(containerView)
-//
-//
-//
-//        let profileImage = UIImageView()
-//
-//        profileImage.layer.masksToBounds = false
-//        profileImage.layer.cornerRadius = profileImage.frame.height/2
-//        profileImage.clipsToBounds = true
-//
-//
-//        let queue = DispatchQueue(label: "loadHinh")
-//        queue.async {
-//            if let profileImageURL = user.imageURL {
-//                      NetWorkService.getInstance.loadAnhFromInternet(url: profileImageURL) { (data, mess) in
-//                          if mess == "Success" {
-//                            DispatchQueue.main.async {
-//                                profileImage.image = UIImage(data: data)
-//                            }
-//                          } else {
-//                              profileImage.image = UIImage(named: "Chat.png")
-//                          }
-//                      }
-//                  } else {
-//                DispatchQueue.main.async {
-//                    profileImage.image = UIImage(named: "Chat.png")
-//                }
-//
-//                  }
-//        }
-//
-//            containerView.addSubview(profileImage)
-//               profileImage.leftAnchor.constraint(equalTo: containerView.leftAnchor).isActive = true
-//               profileImage.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
-//               profileImage.widthAnchor.constraint(equalToConstant: 40).isActive = true
-//               profileImage.heightAnchor.constraint(equalToConstant: 40).isActive = true
-//
-//
-//
-//        let nameLabel = UILabel()
-//        containerView.addSubview(nameLabel)
-//
-//
-//        nameLabel.text = user.username
-//        nameLabel.translatesAutoresizingMaskIntoConstraints = false
-//        nameLabel.leftAnchor.constraint(equalTo: profileImage.rightAnchor, constant: 8).isActive = true
-//        nameLabel.centerYAnchor.constraint(equalTo: profileImage.centerYAnchor).isActive = true
-//        nameLabel.rightAnchor.constraint(equalTo: containerView.rightAnchor).isActive = true
-//        nameLabel.heightAnchor.constraint(equalTo: profileImage.heightAnchor).isActive = true
-//
-//        containerView.centerXAnchor.constraint(equalTo: titleView.centerXAnchor).isActive = true
-//        containerView.centerYAnchor.constraint(equalTo: titleView.centerYAnchor).isActive = true
-//        self.navigationItem.titleView = titleView
-//
-//    }
 
+
+    
+    
+    func showChatController(user : Users){
+        let chatController = ChatLogController()
+        chatController.user = user
+        navigationController?.pushViewController(chatController, animated: true)
+    }
+    
+    
+    
     @objc func handleLogout(){
         do {
             try Auth.auth().signOut()
@@ -156,12 +135,6 @@ class ViewController: UITableViewController {
         present(navController, animated: true, completion: nil)
     }
     
-    func showChatController(user : Users){
-        let chatController = ChatLogController()
-        chatController.user = user
-        navigationController?.pushViewController(chatController, animated: true)
-    }
-    
     
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -175,8 +148,29 @@ class ViewController: UITableViewController {
         return cell
     }
     
+    
+    
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 72
+    }
+    
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let message = messages[indexPath.row]
+        guard let chatPartnerId = message.chatPartnerid() else { return }
+        let ref = Database.database().reference().child("users").child(chatPartnerId)
+        ref.observeSingleEvent(of: .value, with: { (data) in
+          
+            guard let dictionary = data.value as? [String : Any] else { return }
+            let user = Users()
+            user.id = chatPartnerId
+            user.username = dictionary["username"] as? String
+            user.email = dictionary["email"] as? String
+            
+            self.showChatController(user: user)
+            
+        }, withCancel: nil)
+        
     }
 }
 

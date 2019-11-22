@@ -7,11 +7,13 @@
 //
 
 import Foundation
+import Firebase
 
 class Users : NSObject {
     var id: String?
     var username : String?
     var email : String?
     var imageURL : String?
+  
     
 }

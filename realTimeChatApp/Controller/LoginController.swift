@@ -30,9 +30,13 @@ class LoginController: UIViewController {
         txtUserName.isHidden = true
         imgLogo.image = UIImage(named: "Chat.png")
         
-        
+        dismissKeyboard()
+      
+    }
+    
+    func dissmissKeyBoard(){
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
-               view.addGestureRecognizer(tap)
+                     view.addGestureRecognizer(tap)
     }
     
      @objc func dismissKeyboard() {
@@ -55,7 +59,6 @@ class LoginController: UIViewController {
         print(email, pass)
         Auth.auth().signIn(withEmail: email, password: pass) { (user, error) in
             if error != nil {
-                print(error)
                 return
             }
             self.messageController?.fectUserAndSetUpNavBarTitle()

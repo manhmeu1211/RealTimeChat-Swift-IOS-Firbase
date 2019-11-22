@@ -36,7 +36,6 @@
 		0DD9FCA023851B3C00ABB9EF /* ChatLogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD9FC9E23851B3C00ABB9EF /* ChatLogController.swift */; };
 		0DD9FCA123851B3C00ABB9EF /* ChatLogController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0DD9FC9F23851B3C00ABB9EF /* ChatLogController.xib */; };
 		0DD9FCA423851CC500ABB9EF /* ChatLogCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD9FCA223851CC500ABB9EF /* ChatLogCell.swift */; };
-		0DD9FCA523851CC500ABB9EF /* ChatLogCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0DD9FCA323851CC500ABB9EF /* ChatLogCell.xib */; };
 		0DD9FCA723852CE100ABB9EF /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD9FCA623852CE000ABB9EF /* Message.swift */; };
 		0DD9FCAC238535F200ABB9EF /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD9FCAA238535F200ABB9EF /* UserCell.swift */; };
 		41B2FD16F603653E2EE302A8 /* Pods_realTimeChatAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9347E64FA5AE13F84D4D3791 /* Pods_realTimeChatAppTests.framework */; };
@@ -95,7 +94,6 @@
 		0DD9FC9E23851B3C00ABB9EF /* ChatLogController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatLogController.swift; sourceTree = "<group>"; };
 		0DD9FC9F23851B3C00ABB9EF /* ChatLogController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChatLogController.xib; sourceTree = "<group>"; };
 		0DD9FCA223851CC500ABB9EF /* ChatLogCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatLogCell.swift; sourceTree = "<group>"; };
-		0DD9FCA323851CC500ABB9EF /* ChatLogCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChatLogCell.xib; sourceTree = "<group>"; };
 		0DD9FCA623852CE000ABB9EF /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		0DD9FCAA238535F200ABB9EF /* UserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
 		2E0E20910C96840F3E5055FE /* Pods-realTimeChatApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-realTimeChatApp.debug.xcconfig"; path = "Target Support Files/Pods-realTimeChatApp/Pods-realTimeChatApp.debug.xcconfig"; sourceTree = "<group>"; };
@@ -143,7 +141,6 @@
 				0D70FCB82383C6C000084807 /* NewMessageCell.swift */,
 				0D70FCB92383C6C000084807 /* NewMessageCell.xib */,
 				0DD9FCA223851CC500ABB9EF /* ChatLogCell.swift */,
-				0DD9FCA323851CC500ABB9EF /* ChatLogCell.xib */,
 				0DD9FCAA238535F200ABB9EF /* UserCell.swift */,
 			);
 			path = View;
@@ -388,7 +385,6 @@
 				0DACF1262383888A001639BE /* LoginController.xib in Resources */,
 				0DACF12D23838C95001639BE /* Chat.png in Resources */,
 				0DACF0FA238384BC001639BE /* Assets.xcassets in Resources */,
-				0DD9FCA523851CC500ABB9EF /* ChatLogCell.xib in Resources */,
 				0DD9FCA123851B3C00ABB9EF /* ChatLogController.xib in Resources */,
 				0DACF0F5238384BB001639BE /* Main.storyboard in Resources */,
 				0DACF12F23838F0D001639BE /* GoogleService-Info.plist in Resources */,

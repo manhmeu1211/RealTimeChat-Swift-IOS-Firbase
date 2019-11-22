@@ -29,9 +29,13 @@ class RegisterViewController: UIViewController {
         super.viewDidLoad()
         setUpButton()
         setUpImageSelected()
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
-                  view.addGestureRecognizer(tap)
+        setTapToDissMissKeyBoard()
         
+    }
+    
+    func setTapToDissMissKeyBoard(){
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
+                       view.addGestureRecognizer(tap)
     }
     
     @objc func dismissKeyboard() {
@@ -58,28 +62,22 @@ class RegisterViewController: UIViewController {
     }
 
     
-    
-    
     @IBAction func btnRegister(_ sender: Any) {
+        
         guard let username = txtUsername.text, let email = txtEmail.text, let password = txtPassword.text else {
             print("Form is not valid")
             return
         }
-
         Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
             if error != nil {
-                print(error)
+            
                 return
             }
             guard let uid = user?.user.uid else {
                     return
                 }
-            
-   
-            
             let imageName = NSUUID().uuidString
             let storage = Storage.storage().reference().child("ProfileImage").child("\(imageName).jpg")
-                
             if let uploadData = self.imageLogo.image?.jpegData(compressionQuality: 0.1)
             {
                 storage.putData(uploadData, metadata: nil) { (metadata, error) in
@@ -89,56 +87,48 @@ class RegisterViewController: UIViewController {
                 }
                storage.downloadURL(completion: { (url, err) in
                           guard let downloadURL = url else {
-                      
                             return
                           }
                 let image = downloadURL.absoluteString
-                    let values = ["username": username, "email": email, "profileImage": image]
-                                     
+                let values = ["username": username, "email": email, "profileImage" : image]
                 self.regiterUser(uid: uid, values: values as [String : AnyObject])
-                    
-                })
+                    })
+                }
             }
-        }
-        
         }
     }
     
     func regiterUser(uid: String, values : [String:AnyObject]){
         
                 var ref: DatabaseReference!
-
                 ref = Database.database().reference(fromURL: "https://chatapp-manhld.firebaseio.com/")
-
                 let usersReference = ref.child("users").child(uid)
-
                 usersReference.updateChildValues(values) { (err, ref) in
                     if err != nil {
-                            print(err)
+                            print(err!)
                             return
                     }
                     self.navigationItem.title = values["name"] as? String 
                     self.dismiss(animated: true, completion: nil)
-                    
                 }
     }
-    
 }
 
 extension RegisterViewController : UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     @objc func hanldeSelectImage(){
+        
         let picker = UIImagePickerController()
         picker.delegate = self
         picker.allowsEditing = true
         present(picker, animated: true, completion: nil)
+        
     }
     
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
         var selectedImageFromLibary : UIImage?
-        
         if let editedImage = info[.editedImage] as? UIImage {
             selectedImageFromLibary = editedImage
         } else if let originalImage = info[.originalImage] as? UIImage
@@ -150,8 +140,11 @@ extension RegisterViewController : UIImagePickerControllerDelegate, UINavigation
         }
         dismiss(animated: true, completion: nil)
     }
+    
+    
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         print("cancel")
         dismiss(animated: true, completion: nil)
     }
+    
 }

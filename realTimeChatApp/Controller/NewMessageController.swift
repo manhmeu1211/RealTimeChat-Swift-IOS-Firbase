@@ -23,13 +23,12 @@ class NewMessageController: UIViewController {
           messageTable.register(UINib(nibName: "NewMessageCell", bundle: nil), forCellReuseIdentifier: "NewMessageCell")
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: UIBarButtonItem.Style.plain, target: self, action: #selector(handleCancel))
-        
         fectchUser()
 
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        fectchUser()
+        messageTable.reloadData()
     }
 
     @objc func handleCancel(){
@@ -42,8 +41,8 @@ class NewMessageController: UIViewController {
                let user = Users()
                 print(snapshot)
                 user.id = snapshot.key
-                user.email = dictionary["email"] as! String
-                user.username = dictionary["username"] as! String
+                user.email = dictionary["email"] as? String
+                user.username = dictionary["username"] as? String
                 user.imageURL = dictionary["profileImage"] as? String
                 self.users.append(user)
            
