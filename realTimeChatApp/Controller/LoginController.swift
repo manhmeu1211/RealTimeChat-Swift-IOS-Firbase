@@ -29,8 +29,7 @@ class LoginController: UIViewController {
         setUpButton()
         txtUserName.isHidden = true
         imgLogo.image = UIImage(named: "Chat.png")
-        
-        dismissKeyboard()
+        dissmissKeyBoard()
       
     }
     

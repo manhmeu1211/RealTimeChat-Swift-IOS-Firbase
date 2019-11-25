@@ -23,10 +23,31 @@ class ChatLogController: UIViewController, UITextFieldDelegate {
     
     var messages = [Message]()
     
+    var lastIndex : IndexPath!
+    
     var user : Users? {
         didSet {
             navigationItem.title = user?.username
-            observeMessages()
+           
+        }
+    }
+    
+     override func viewDidLoad() {
+         super.viewDidLoad()
+         txtMessage.delegate = self
+         setUpCollectionView()
+         dismissKeyboard()
+         setUpKeyBoardObservers()
+         messages.removeAll()
+         chatLogCollection.reloadData()
+         observeMessages()
+
+     }
+    
+    
+    override func viewDidAppear(_ animated: Bool) {
+         DispatchQueue.main.async {
+            self.chatLogCollection.reloadData()
         }
     }
     
@@ -49,8 +70,9 @@ class ChatLogController: UIViewController, UITextFieldDelegate {
                 messageData.text = dictionaryMessage["text"] as? String
                 messageData.timestamp = dictionaryMessage["timestamp"] as? String
                 messageData.toId = dictionaryMessage["toId"] as? String
+                
                 if messageData.chatPartnerid() == self.user?.id{
-                    self.messages.append(messageData)
+                self.messages.append(messageData)
                     DispatchQueue.main.async {
                         self.chatLogCollection.reloadData()
                     }
@@ -58,21 +80,8 @@ class ChatLogController: UIViewController, UITextFieldDelegate {
             }, withCancel: nil)
         }, withCancel: nil)
     }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        txtMessage.delegate = self
-        setUpCollectionView()
-        dismissKeyboard()
-        setUpKeyBoardObservers()
-        containerContranst = containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        containerContranst.isActive = true
-        
-    }
+ 
 
-    
-    
-    
     func setUpKeyBoardObservers(){
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(handleKeyBoardShow), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -138,7 +147,6 @@ class ChatLogController: UIViewController, UITextFieldDelegate {
         chatLogCollection.register(ChatLogCell.self, forCellWithReuseIdentifier: "ChatLogCell")
           let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
         chatLogCollection.addGestureRecognizer(tap)
-        
     }
     
  
@@ -188,7 +196,7 @@ class ChatLogController: UIViewController, UITextFieldDelegate {
 
 extension ChatLogController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout  {
     
-    
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return messages.count
     }
@@ -210,8 +218,13 @@ extension ChatLogController: UICollectionViewDataSource, UICollectionViewDelegat
             cell.bubbleLeftAnchor?.isActive = true
         }
         cell.bubbleWidthAnchor?.constant = estimateFrameForText(text: message.text!).width + 30
+        
+        
         return cell
     }
+    
+    
+    
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         var height : CGFloat = 80
@@ -220,6 +233,9 @@ extension ChatLogController: UICollectionViewDataSource, UICollectionViewDelegat
         }
         return CGSize(width: view.frame.width, height: height)
     }
+    
+    
+    
     
     func estimateFrameForText(text: String) -> CGRect {
         let size = CGSize(width: 200, height: 10000)

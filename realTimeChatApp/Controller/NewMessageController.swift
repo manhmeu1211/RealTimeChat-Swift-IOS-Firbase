@@ -12,6 +12,7 @@ import Firebase
 class NewMessageController: UIViewController {
     
     var users = [Users]()
+    
     var messageController : ViewController?
     @IBOutlet weak var messageTable: UITableView!
     
@@ -40,10 +41,11 @@ class NewMessageController: UIViewController {
             if let dictionary = snapshot.value  as? [String : Any] {
                let user = Users()
                 print(snapshot)
-                user.id = snapshot.key
+                user.id = snapshot.key 
                 user.email = dictionary["email"] as? String
                 user.username = dictionary["username"] as? String
                 user.imageURL = dictionary["profileImage"] as? String
+                
                 self.users.append(user)
            
                 DispatchQueue.main.async {
@@ -111,6 +113,7 @@ extension NewMessageController : UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = ChatLogController()
+        
         vc.user = users[indexPath.row]
       
         self.dismiss(animated: true) {

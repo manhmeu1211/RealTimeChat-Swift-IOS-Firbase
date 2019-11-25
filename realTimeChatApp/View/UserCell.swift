@@ -66,6 +66,7 @@ class UserCell: UITableViewCell {
         imageView.layer.masksToBounds = false
         imageView.layer.cornerRadius = imageView.frame.height/2
         imageView.clipsToBounds = true
+        imageView.contentMode = .scaleToFill
         return imageView
     }()
     

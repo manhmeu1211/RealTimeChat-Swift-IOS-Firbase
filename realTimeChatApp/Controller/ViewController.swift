@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import UserNotifications
 
 class ViewController: UITableViewController {
     var messages = [Message]()
@@ -19,10 +20,10 @@ class ViewController: UITableViewController {
         setUpTableView()
         checkIfUserLogged()
         setUpNavItem()
+        notiFication()
+        
     }
-    
 
-    
     func setUpNavItem()  {
           navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "log-out.png"), style: UIBarButtonItem.Style.plain, target: self, action: #selector(handleLogout))
               navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "chat-2.png"), style: UIBarButtonItem.Style.plain, target: self, action: #selector(handleNewMessage))
@@ -32,6 +33,8 @@ class ViewController: UITableViewController {
         tableView.separatorStyle = .singleLine
         tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 10).isActive = true
         tableView.register(UserCell.self, forCellReuseIdentifier: "cellid")
+        tableView.separatorStyle = .none
+        tableView.allowsSelectionDuringEditing = true
     }
     
     func observeUserMessages(){
@@ -55,19 +58,25 @@ class ViewController: UITableViewController {
                                     self.messages = Array(self.messageDictionary.values)
                                 }
                     self.timer?.invalidate()
-                    print("we just canceled our timer")
-                    self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleReloadTable), userInfo: nil, repeats: false)
-                    print("scheduled a table reload in 0.1 sec")
+                    self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.handleReloadTable), userInfo: nil, repeats: false)
                               
                             }
             }, withCancel: nil)
+        }, withCancel: nil)
+        
+        
+        ref.observe(.childRemoved, with: { (data) in
+            self.messageDictionary.removeValue(forKey: data.key)
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+            
         }, withCancel: nil)
         
     }
     
     @objc func handleReloadTable(){
         DispatchQueue.main.async {
-            print("Reload table")
             self.tableView.reloadData()
             
         }
@@ -117,14 +126,16 @@ class ViewController: UITableViewController {
     
     
     @objc func handleLogout(){
-        do {
-            try Auth.auth().signOut()
+       do {
+           try Auth.auth().signOut()
         } catch let logOutError {
-            print(logOutError)
+           print(logOutError)
         }
+        notiFication()
         let loginController = LoginController()
-        loginController.messageController = self
+      loginController.messageController = self
         present(loginController, animated: true, completion: nil)
+      
      }
     
     
@@ -171,6 +182,71 @@ class ViewController: UITableViewController {
             
         }, withCancel: nil)
         
+        
     }
+    
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+           return true
+       }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        guard let uid = Auth.auth().currentUser?.uid else {
+            return
+        }
+        let message = self.messages[indexPath.row]
+        if let chatPartnerId = message.chatPartnerid() {
+            Database.database().reference().child("user-message").child(uid).child(chatPartnerId).removeValue { (error, ref) in
+                if error != nil {
+                    print("Failed")
+                    return
+                }
+                self.messageDictionary.removeValue(forKey: chatPartnerId)
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+            }
+        }
+        
+      
+        
+    }
+    
+   
+}
+
+extension ViewController : UNUserNotificationCenterDelegate {
+    
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        completionHandler()
+    }
+
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler([.alert, .badge, .sound])
+    }
+    
+    
+    func notiFication(){
+        let center = UNUserNotificationCenter.current()
+        let content = UNMutableNotificationContent()
+        content.title = "Check new Message"
+        content.body = "Tapped cho check your message"
+        content.sound = UNNotificationSound.default
+          
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 10,
+          repeats: false)
+
+        let identifier = "UYLLocalNotification"
+        let request = UNNotificationRequest(identifier: identifier,
+                        content: content, trigger: trigger)
+          
+          center.add(request, withCompletionHandler: { (error) in
+            if let error = error {
+             print(error)
+            }
+              print("notification")
+          })
+    }
+    
 }
 
