@@ -33,6 +33,8 @@
 		0DACF12B23838C21001639BE /* Logo.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0DACF12A23838C21001639BE /* Logo.jpg */; };
 		0DACF12D23838C95001639BE /* Chat.png in Resources */ = {isa = PBXBuildFile; fileRef = 0DACF12C23838C95001639BE /* Chat.png */; };
 		0DACF12F23838F0D001639BE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0DACF12E23838F0D001639BE /* GoogleService-Info.plist */; };
+		0DB4C85223949E2000F48022 /* RegisterV2Controller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB4C85023949E2000F48022 /* RegisterV2Controller.swift */; };
+		0DB4C85323949E2000F48022 /* RegisterV2Controller.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0DB4C85123949E2000F48022 /* RegisterV2Controller.xib */; };
 		0DD9FCA023851B3C00ABB9EF /* ChatLogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD9FC9E23851B3C00ABB9EF /* ChatLogController.swift */; };
 		0DD9FCA123851B3C00ABB9EF /* ChatLogController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0DD9FC9F23851B3C00ABB9EF /* ChatLogController.xib */; };
 		0DD9FCA423851CC500ABB9EF /* ChatLogCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD9FCA223851CC500ABB9EF /* ChatLogCell.swift */; };
@@ -91,6 +93,8 @@
 		0DACF12A23838C21001639BE /* Logo.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Logo.jpg; sourceTree = "<group>"; };
 		0DACF12C23838C95001639BE /* Chat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Chat.png; sourceTree = "<group>"; };
 		0DACF12E23838F0D001639BE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		0DB4C85023949E2000F48022 /* RegisterV2Controller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterV2Controller.swift; sourceTree = "<group>"; };
+		0DB4C85123949E2000F48022 /* RegisterV2Controller.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RegisterV2Controller.xib; sourceTree = "<group>"; };
 		0DD9FC9E23851B3C00ABB9EF /* ChatLogController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatLogController.swift; sourceTree = "<group>"; };
 		0DD9FC9F23851B3C00ABB9EF /* ChatLogController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChatLogController.xib; sourceTree = "<group>"; };
 		0DD9FCA223851CC500ABB9EF /* ChatLogCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatLogCell.swift; sourceTree = "<group>"; };
@@ -227,6 +231,8 @@
 				0D70FCB42383C69F00084807 /* NewMessageController.xib */,
 				0DD9FC9E23851B3C00ABB9EF /* ChatLogController.swift */,
 				0DD9FC9F23851B3C00ABB9EF /* ChatLogController.xib */,
+				0DB4C85023949E2000F48022 /* RegisterV2Controller.swift */,
+				0DB4C85123949E2000F48022 /* RegisterV2Controller.xib */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -384,6 +390,7 @@
 				0D70FCC32383CCF400084807 /* log-out.png in Resources */,
 				0DACF1262383888A001639BE /* LoginController.xib in Resources */,
 				0DACF12D23838C95001639BE /* Chat.png in Resources */,
+				0DB4C85323949E2000F48022 /* RegisterV2Controller.xib in Resources */,
 				0DACF0FA238384BC001639BE /* Assets.xcassets in Resources */,
 				0DD9FCA123851B3C00ABB9EF /* ChatLogController.xib in Resources */,
 				0DACF0F5238384BB001639BE /* Main.storyboard in Resources */,
@@ -522,6 +529,7 @@
 				0D70FCB1238394F500084807 /* RegisterViewController.swift in Sources */,
 				0D70FCB52383C69F00084807 /* NewMessageController.swift in Sources */,
 				0DD9FCA023851B3C00ABB9EF /* ChatLogController.swift in Sources */,
+				0DB4C85223949E2000F48022 /* RegisterV2Controller.swift in Sources */,
 				0DD9FCAC238535F200ABB9EF /* UserCell.swift in Sources */,
 				0D70FCC62383D14400084807 /* User.swift in Sources */,
 				0DACF0F0238384BB001639BE /* SceneDelegate.swift in Sources */,

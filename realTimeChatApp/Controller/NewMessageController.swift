@@ -32,11 +32,11 @@ class NewMessageController: UIViewController {
         messageTable.reloadData()
     }
 
-    @objc func handleCancel(){
+    @objc func handleCancel() {
         self.dismiss(animated: true, completion: nil)
     }
     
-    func fectchUser(){
+    func fectchUser() {
         Database.database().reference().child("users").observe(.childAdded, with: { (snapshot) in
             if let dictionary = snapshot.value  as? [String : Any] {
                let user = Users()
@@ -79,7 +79,7 @@ extension NewMessageController : UITableViewDataSource, UITableViewDelegate {
             let url = profileImageURL
           
             queue.async {
-                NetWorkService.getInstance.loadAnhFromInternet(url: url) { (data, message) in
+                NetWorkService.getInstance.loadImageFromInternet(url: url) { (data, message) in
                     if message == "Success" {
                         DispatchQueue.main.async {
                             cell.imgAvatar.image = UIImage(data: data)
@@ -92,7 +92,7 @@ extension NewMessageController : UITableViewDataSource, UITableViewDelegate {
             }
         } else {
             queue.async {
-                       NetWorkService.getInstance.loadAnhFromInternet(url: "https://virl.bc.ca/wp-content/uploads/2019/01/AccountIcon2.png") { (data, message) in
+                       NetWorkService.getInstance.loadImageFromInternet(url: "https://virl.bc.ca/wp-content/uploads/2019/01/AccountIcon2.png") { (data, message) in
                            if message == "Success" {
                                DispatchQueue.main.async {
                                    cell.imgAvatar.image = UIImage(data: data)

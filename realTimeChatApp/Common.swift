@@ -89,7 +89,6 @@ open class ToastView: UILabel {
 
 open class NetWorkService {
     
-    
     class var getInstance: NetWorkService {
          struct Static {
              static let instance: NetWorkService = NetWorkService()
@@ -98,7 +97,7 @@ open class NetWorkService {
      }
     
     
-    func loadAnhFromInternet(url : String, completionHandler: @escaping (Data, String) -> () ){
+    func loadImageFromInternet(url : String, completionHandler: @escaping (Data, String) -> () ){
         
           let url = URL(string: url)
           

@@ -20,8 +20,7 @@ class UserCell: UITableViewCell {
     }
     
     
-    func setUpNameAndAvatar(){
-     
+    func setUpNameAndAvatar() {
         if let id = message?.chatPartnerid(){
                           let ref = Database.database().reference().child("users").child(id)
                           ref.observe(.value, with: { (snapshot) in
@@ -31,7 +30,7 @@ class UserCell: UITableViewCell {
                                       let queue = DispatchQueue(label: "LoadHinh")
                                    
                                       queue.async {
-                                          NetWorkService.getInstance.loadAnhFromInternet(url: profileImgURL) { (data, mess) in
+                                          NetWorkService.getInstance.loadImageFromInternet(url: profileImgURL) { (data, mess) in
                                               if mess == "Success" {
                                                   DispatchQueue.main.async {
                                                     self.profileImageView.image = UIImage(data: data)
@@ -53,12 +52,12 @@ class UserCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        
         textLabel?.frame = CGRect(x: 90, y: textLabel!.frame.origin.y - 2, width: textLabel!.frame.width, height: textLabel!.frame.height)
         detailTextLabel?.frame = CGRect(x: 90, y: detailTextLabel!.frame.origin.y + 2, width: detailTextLabel!.frame.width, height: detailTextLabel!.frame.height)
         detailTextLabel?.numberOfLines = 1
        
     }
+    
     
     let profileImageView : UIImageView = {
         let imageView = UIImageView()
@@ -109,9 +108,6 @@ class UserCell: UITableViewCell {
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
-  
-        
     }
     
 }

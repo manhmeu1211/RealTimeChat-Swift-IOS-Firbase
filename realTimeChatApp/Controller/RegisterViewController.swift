@@ -10,15 +10,23 @@ import UIKit
 import Firebase
 
 class RegisterViewController: UIViewController {
+    
 
+    @IBOutlet weak var scrollView: UIScrollView!
+    
     @IBOutlet weak var imageLogo: UIImageView!
- 
+    
+
     @IBOutlet weak var txtUsername: UITextField!
     
+   
     @IBOutlet weak var txtEmail: UITextField!
+    
+ 
     
     @IBOutlet weak var txtPassword: UITextField!
     
+  
     @IBOutlet weak var uiButtonRegiter: UIButton!
     
     @IBOutlet var selectImage: UITapGestureRecognizer!
@@ -30,10 +38,10 @@ class RegisterViewController: UIViewController {
         setUpButton()
         setUpImageSelected()
         setTapToDissMissKeyBoard()
-        
+        setUpKeyBoardObservers()
     }
     
-    func setTapToDissMissKeyBoard(){
+    func setTapToDissMissKeyBoard() {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
                        view.addGestureRecognizer(tap)
     }
@@ -43,7 +51,7 @@ class RegisterViewController: UIViewController {
      }
 
 
-    func setUpImageSelected(){
+    func setUpImageSelected() {
         selectImage = UITapGestureRecognizer(target: self, action: #selector(hanldeSelectImage))
         imageLogo.image = UIImage(named: "Chat.png")
         imageLogo.addGestureRecognizer(selectImage)
@@ -53,52 +61,80 @@ class RegisterViewController: UIViewController {
     
    
    
-    func setUpButton(){
+    func setUpButton() {
         uiButtonRegiter.layer.borderWidth = 2
         uiButtonRegiter.layer.cornerRadius = 5
         uiButtonRegiter.layer.backgroundColor = UIColor.systemPink.cgColor
         uiButtonRegiter.layer.shadowColor = UIColor.systemPink.cgColor
         uiButtonRegiter.layer.borderColor = UIColor.systemPink.cgColor
     }
+    
+    func setUpKeyBoardObservers() {
+          let notificationCenter = NotificationCenter.default
+          notificationCenter.addObserver(self, selector: #selector(handleKeyBoardShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+          notificationCenter.addObserver(self, selector: #selector(handleKeyBoardHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        }
+        
+      
+      
+        @objc func handleKeyBoardShow(notification: Notification) {
+          
+          guard let userInfo = notification.userInfo else { return }
+          
+          guard let keyboardSize = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {return}
+          
+          let keyboardFrame = keyboardSize.cgRectValue
+          
+          let contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardFrame.height, right: 0)
+          scrollView.contentInset = contentInset
+      }
+        
+      
+      @objc func handleKeyBoardHide(notification : Notification) {
+          scrollView.contentInset = UIEdgeInsets.zero
+
+      }
+    
+    
 
     
     @IBAction func btnRegister(_ sender: Any) {
-        
         guard let username = txtUsername.text, let email = txtEmail.text, let password = txtPassword.text else {
-            print("Form is not valid")
-            return
-        }
-        Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
-            if error != nil {
-            
-                return
-            }
-            guard let uid = user?.user.uid else {
-                    return
-                }
-            let imageName = NSUUID().uuidString
-            let storage = Storage.storage().reference().child("ProfileImage").child("\(imageName).jpg")
-            if let uploadData = self.imageLogo.image?.jpegData(compressionQuality: 0.1)
-            {
-                storage.putData(uploadData, metadata: nil) { (metadata, error) in
-                if error != nil {
-                 
-                    return
-                }
-               storage.downloadURL(completion: { (url, err) in
-                          guard let downloadURL = url else {
-                            return
-                          }
-                let image = downloadURL.absoluteString
-                let values = ["username": username, "email": email, "profileImage" : image]
-                self.regiterUser(uid: uid, values: values as [String : AnyObject])
-                    })
-                }
-            }
-        }
+                  print("Form is not valid")
+                  return
+              }
+              Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
+                  if error != nil {
+                  
+                      return
+                  }
+                  guard let uid = user?.user.uid else {
+                          return
+                      }
+                  let imageName = NSUUID().uuidString
+                  let storage = Storage.storage().reference().child("ProfileImage").child("\(imageName).jpg")
+                  if let uploadData = self.imageLogo.image?.jpegData(compressionQuality: 0.1)
+                  {
+                      storage.putData(uploadData, metadata: nil) { (metadata, error) in
+                      if error != nil {
+                       
+                          return
+                      }
+                     storage.downloadURL(completion: { (url, err) in
+                                guard let downloadURL = url else {
+                                  return
+                                }
+                      let image = downloadURL.absoluteString
+                      let values = ["username": username, "email": email, "profileImage" : image]
+                      self.regiterUser(uid: uid, values: values as [String : AnyObject])
+                          })
+                      }
+                  }
+              }
     }
     
-    func regiterUser(uid: String, values : [String:AnyObject]){
+    
+    func regiterUser(uid: String, values : [String:AnyObject]) {
         
                 var ref: DatabaseReference!
                 ref = Database.database().reference(fromURL: "https://chatapp-manhld.firebaseio.com/")
@@ -116,7 +152,7 @@ class RegisterViewController: UIViewController {
 
 extension RegisterViewController : UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
-    @objc func hanldeSelectImage(){
+    @objc func hanldeSelectImage() {
         
         let picker = UIImagePickerController()
         picker.delegate = self

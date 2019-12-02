@@ -24,12 +24,12 @@ class ViewController: UITableViewController {
         
     }
 
-    func setUpNavItem()  {
+    func setUpNavItem() {
           navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "log-out.png"), style: UIBarButtonItem.Style.plain, target: self, action: #selector(handleLogout))
               navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "chat-2.png"), style: UIBarButtonItem.Style.plain, target: self, action: #selector(handleNewMessage))
     }
     
-    func setUpTableView(){
+    func setUpTableView() {
         tableView.separatorStyle = .singleLine
         tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 10).isActive = true
         tableView.register(UserCell.self, forCellReuseIdentifier: "cellid")
@@ -37,7 +37,7 @@ class ViewController: UITableViewController {
         tableView.allowsSelectionDuringEditing = true
     }
     
-    func observeUserMessages(){
+    func observeUserMessages() {
         
         guard let uid = Auth.auth().currentUser?.uid else {
             return
@@ -75,7 +75,7 @@ class ViewController: UITableViewController {
         
     }
     
-    @objc func handleReloadTable(){
+    @objc func handleReloadTable() {
         DispatchQueue.main.async {
             self.tableView.reloadData()
             
@@ -83,7 +83,7 @@ class ViewController: UITableViewController {
     }
     
    
-    func checkIfUserLogged(){
+    func checkIfUserLogged() {
         let uid = Auth.auth().currentUser?.uid
                if uid == nil {
                    perform(#selector(handleLogout), with: nil, afterDelay: 0)
@@ -93,7 +93,7 @@ class ViewController: UITableViewController {
     }
     
     
-    func fectUserAndSetUpNavBarTitle(){
+    func fectUserAndSetUpNavBarTitle() {
         messages.removeAll()
         messageDictionary.removeAll()
         tableView.reloadData()
@@ -117,7 +117,7 @@ class ViewController: UITableViewController {
 
     
     
-    func showChatController(user : Users){
+    func showChatController(user : Users) {
         let chatController = ChatLogController()
         chatController.user = user
         navigationController?.pushViewController(chatController, animated: true)
@@ -125,7 +125,7 @@ class ViewController: UITableViewController {
     
     
     
-    @objc func handleLogout(){
+    @objc func handleLogout() {
        do {
            try Auth.auth().signOut()
         } catch let logOutError {
@@ -134,12 +134,13 @@ class ViewController: UITableViewController {
         notiFication()
         let loginController = LoginController()
       loginController.messageController = self
-        present(loginController, animated: true, completion: nil)
+        navigationController?.pushViewController(loginController, animated: true)
+//        present(loginController, animated: true, completion: nil)
       
      }
     
     
-    @objc func handleNewMessage(){
+    @objc func handleNewMessage() {
         let newMessageVC = NewMessageController()
         newMessageVC.messageController = self
         let navController = UINavigationController(rootViewController: newMessageVC)
@@ -173,11 +174,14 @@ class ViewController: UITableViewController {
         ref.observeSingleEvent(of: .value, with: { (data) in
           
             guard let dictionary = data.value as? [String : Any] else { return }
+            print(dictionary)
             let user = Users()
             user.id = chatPartnerId
             user.username = dictionary["username"] as? String
             user.email = dictionary["email"] as? String
-            
+            user.imageURL = dictionary["profileImage"] as? String
+          
+
             self.showChatController(user: user)
             
         }, withCancel: nil)
@@ -206,12 +210,7 @@ class ViewController: UITableViewController {
                 }
             }
         }
-        
-      
-        
     }
-    
-   
 }
 
 extension ViewController : UNUserNotificationCenterDelegate {
@@ -226,7 +225,7 @@ extension ViewController : UNUserNotificationCenterDelegate {
     }
     
     
-    func notiFication(){
+    func notiFication() {
         let center = UNUserNotificationCenter.current()
         let content = UNMutableNotificationContent()
         content.title = "Check new Message"

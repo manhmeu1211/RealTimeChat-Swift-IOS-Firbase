@@ -11,14 +11,19 @@ import Firebase
 
 class ChatLogController: UIViewController, UITextFieldDelegate {
 
+
+    @IBOutlet weak var scrollView: UIScrollView!
+    
     @IBOutlet weak var chatLogCollection: UICollectionView!
     
-    
+ 
     @IBOutlet weak var btnSendUi: UIButton!
-    @IBOutlet weak var txtMessage: UITextField!
-   
     
-    @IBOutlet weak var containerView: UIView!
+    
+ 
+    @IBOutlet weak var txtMessage: UITextField!
+    
+    
     var containerContranst: NSLayoutConstraint!
     
     var messages = [Message]()
@@ -34,16 +39,19 @@ class ChatLogController: UIViewController, UITextFieldDelegate {
     
      override func viewDidLoad() {
          super.viewDidLoad()
-         txtMessage.delegate = self
-         setUpCollectionView()
-         dismissKeyboard()
-         setUpKeyBoardObservers()
-         messages.removeAll()
-         chatLogCollection.reloadData()
-         observeMessages()
-
+        txtMessage.delegate = self
+        setUpCollectionView()
+        dismissKeyboard()
+        setUpKeyBoardObservers()
+        observeMessages()
+        messages.removeAll()
+        chatLogCollection.reloadData()
+      
      }
     
+    override func viewWillAppear(_ animated: Bool) {
+    }
+ 
     
     override func viewDidAppear(_ animated: Bool) {
          DispatchQueue.main.async {
@@ -51,7 +59,7 @@ class ChatLogController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    func observeMessages(){
+    func observeMessages() {
         guard let uid = Auth.auth().currentUser?.uid else {
             return
         }
@@ -80,9 +88,12 @@ class ChatLogController: UIViewController, UITextFieldDelegate {
             }, withCancel: nil)
         }, withCancel: nil)
     }
+    
+  
+  
  
 
-    func setUpKeyBoardObservers(){
+    func setUpKeyBoardObservers() {
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(handleKeyBoardShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(handleKeyBoardHide), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -99,34 +110,18 @@ class ChatLogController: UIViewController, UITextFieldDelegate {
         
         let keyboardFrame = keyboardSize.cgRectValue
         
-          if self.view.frame.origin.y == 0{
-                  self.view.frame.origin.y -= keyboardFrame.height
-              }
-        
-        UIView.animate(withDuration: 0.5, animations: { () -> Void in
-                  self.view.layoutIfNeeded()
-              })
+       let contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardFrame.height, right: 0)
+                  scrollView.contentInset = contentInset
       }
     
-    @objc func handleKeyBoardHide(notification : Notification){
-    guard let userInfo = notification.userInfo else { return }
-        
-        guard let keyboardSize = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {return}
-        
-        let keyboardFrame = keyboardSize.cgRectValue
-        
-          if self.view.frame.origin.y != 0{
-                  self.view.frame.origin.y += keyboardFrame.height
-              }
-        
-        UIView.animate(withDuration: 0.5, animations: { () -> Void in
-                  self.view.layoutIfNeeded()
-              })
+    @objc func handleKeyBoardHide(notification : Notification) {
+        scrollView.contentInset = UIEdgeInsets.zero
     }
     
     
     
-    func dissmissKeyBoard(){
+    
+    func dissmissKeyBoard() {
           let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
                        view.addGestureRecognizer(tap)
       }
@@ -150,13 +145,12 @@ class ChatLogController: UIViewController, UITextFieldDelegate {
     }
     
  
-
     @IBAction func btnSend(_ sender: Any) {
-      
-      handleSend()
+         handleSend()
     }
     
-    func handleSend(){
+    
+    func handleSend() {
         if txtMessage.text!.isEmpty {
         } else {
              let ref = Database.database().reference().child("message")
@@ -195,8 +189,9 @@ class ChatLogController: UIViewController, UITextFieldDelegate {
 
 
 extension ChatLogController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout  {
+        
     
-
+     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return messages.count
     }
@@ -212,12 +207,27 @@ extension ChatLogController: UICollectionViewDataSource, UICollectionViewDelegat
             cell.bubbleRightAnchor?.isActive = true
             cell.bubbleLeftAnchor?.isActive = false
         } else {
+            cell.profileImage.isHidden = false
+            if user?.imageURL != nil {
+                let queue = DispatchQueue(label: "loadAvatar")
+                queue.async {
+                    NetWorkService.getInstance.loadImageFromInternet(url: self.user!.imageURL!) {
+                        (data, error) in
+                        DispatchQueue.main.async {
+                            cell.profileImage.image = UIImage(data: data)
+                        }
+                    }
+                }
+            } else {
+                cell.profileImage.image = UIImage(named: "Chat.png")
+            }
+          
             cell.bubbleView.backgroundColor = .systemGray6
             cell.textView.textColor = .black
             cell.bubbleRightAnchor?.isActive = false
             cell.bubbleLeftAnchor?.isActive = true
         }
-        cell.bubbleWidthAnchor?.constant = estimateFrameForText(text: message.text!).width + 30
+        cell.bubbleWidthAnchor?.constant = estimateFrameForText(text: message.text!).width + 35
         
         
         return cell
@@ -234,7 +244,10 @@ extension ChatLogController: UICollectionViewDataSource, UICollectionViewDelegat
         return CGSize(width: view.frame.width, height: height)
     }
     
+   
     
+    
+
     
     
     func estimateFrameForText(text: String) -> CGRect {
