@@ -78,14 +78,12 @@ class ChatLogController: UIViewController, UITextFieldDelegate {
                 messageData.text = dictionaryMessage["text"] as? String
                 messageData.timestamp = dictionaryMessage["timestamp"] as? String
                 messageData.toId = dictionaryMessage["toId"] as? String
-                
                 if messageData.chatPartnerid() == self.user?.id {
                 self.messages.append(messageData)
-               
                     DispatchQueue.main.async {
                         self.chatLogCollection.reloadData()
                         print(self.messages)
-                        self.chatLogCollection.scrollToItem(at: IndexPath(item: self.messages.count - 1, section: 0), at: UICollectionView.ScrollPosition.bottom, animated: true)
+                        self.chatLogCollection.scrollToItem(at: IndexPath(item: self.messages.count - 1, section: 0), at: UICollectionView.ScrollPosition.bottom, animated: false)
                     }
                 }
             }, withCancel: nil)

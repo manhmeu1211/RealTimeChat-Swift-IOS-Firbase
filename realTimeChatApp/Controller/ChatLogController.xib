@@ -37,8 +37,8 @@
                                         <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                     </collectionViewFlowLayout>
                                 </collectionView>
-                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="YUE-jM-NUd">
-                                    <rect key="frame" x="5" y="768" width="404" height="50"/>
+                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Write your message..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="YUE-jM-NUd">
+                                    <rect key="frame" x="5" y="763" width="404" height="50"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="50" id="OBh-Yu-Zcw"/>
                                     </constraints>
@@ -63,7 +63,7 @@
                                 <constraint firstAttribute="trailing" secondItem="Sd1-oe-ese" secondAttribute="trailing" constant="10" id="7Ph-nW-7Ir"/>
                                 <constraint firstItem="hMl-bT-KaH" firstAttribute="top" secondItem="QkE-Ff-46l" secondAttribute="top" id="BOf-cN-RUr"/>
                                 <constraint firstAttribute="trailing" secondItem="YUE-jM-NUd" secondAttribute="trailing" constant="5" id="HkF-Uv-3uY"/>
-                                <constraint firstAttribute="bottom" secondItem="YUE-jM-NUd" secondAttribute="bottom" id="RhF-q5-aBy"/>
+                                <constraint firstAttribute="bottom" secondItem="YUE-jM-NUd" secondAttribute="bottom" constant="5" id="RhF-q5-aBy"/>
                                 <constraint firstAttribute="trailing" secondItem="hMl-bT-KaH" secondAttribute="trailing" constant="5" id="cZl-jQ-nki"/>
                                 <constraint firstItem="hMl-bT-KaH" firstAttribute="height" secondItem="QkE-Ff-46l" secondAttribute="height" multiplier="0.95" id="dod-4P-gZp"/>
                                 <constraint firstItem="hMl-bT-KaH" firstAttribute="leading" secondItem="QkE-Ff-46l" secondAttribute="leading" constant="5" id="eQA-Y4-0gt"/>

@@ -172,10 +172,20 @@ class RegisterViewController: UIViewController {
                     }
                     self.loading.stopAnimating()
                     self.loading.isHidden = true
-                    self.navigationItem.title = values["name"] as? String 
-                    self.dismiss(animated: true, completion: nil)
+                    self.navigationItem.title = values["name"] as? String
+                    
+                    
+                    let alertResgiserSuccess : UIAlertController = UIAlertController(title: "Register Success", message: "Login to chat now !", preferredStyle: UIAlertController.Style.alert)
+                    let btnOK: UIAlertAction = UIAlertAction(title: "OK", style: .default) { (UIAlertAction) in
+                         self.dismiss(animated: true, completion: nil)
+                    }
+                    alertResgiserSuccess.addAction(btnOK)
+                    self.present(alertResgiserSuccess, animated: true, completion: nil)
+                    
                 }
     }
+    
+    
     
  
 }
