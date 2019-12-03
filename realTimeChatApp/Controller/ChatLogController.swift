@@ -46,7 +46,7 @@ class ChatLogController: UIViewController, UITextFieldDelegate {
         observeMessages()
         messages.removeAll()
         chatLogCollection.reloadData()
-      
+        
      }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -79,10 +79,13 @@ class ChatLogController: UIViewController, UITextFieldDelegate {
                 messageData.timestamp = dictionaryMessage["timestamp"] as? String
                 messageData.toId = dictionaryMessage["toId"] as? String
                 
-                if messageData.chatPartnerid() == self.user?.id{
+                if messageData.chatPartnerid() == self.user?.id {
                 self.messages.append(messageData)
+               
                     DispatchQueue.main.async {
                         self.chatLogCollection.reloadData()
+                        print(self.messages)
+                        self.chatLogCollection.scrollToItem(at: IndexPath(item: self.messages.count - 1, section: 0), at: UICollectionView.ScrollPosition.bottom, animated: true)
                     }
                 }
             }, withCancel: nil)
@@ -142,6 +145,7 @@ class ChatLogController: UIViewController, UITextFieldDelegate {
         chatLogCollection.register(ChatLogCell.self, forCellWithReuseIdentifier: "ChatLogCell")
           let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
         chatLogCollection.addGestureRecognizer(tap)
+       
     }
     
  
@@ -190,9 +194,10 @@ class ChatLogController: UIViewController, UITextFieldDelegate {
 
 extension ChatLogController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout  {
         
-    
+  
      
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
         return messages.count
     }
     
