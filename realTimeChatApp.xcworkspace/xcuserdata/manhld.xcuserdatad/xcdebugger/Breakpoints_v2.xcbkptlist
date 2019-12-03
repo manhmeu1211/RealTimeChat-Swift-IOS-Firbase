@@ -30,8 +30,8 @@
             filePath = "realTimeChatApp/Controller/RegisterViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "66"
-            endingLineNumber = "66"
+            startingLineNumber = "73"
+            endingLineNumber = "73"
             landmarkName = "setUpButton()"
             landmarkType = "7">
          </BreakpointContent>

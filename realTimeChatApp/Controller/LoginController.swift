@@ -11,7 +11,8 @@ import Firebase
 
 class LoginController: UIViewController {
 
-   
+    @IBOutlet weak var loading: UIActivityIndicatorView!
+    
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var txtEmail: UITextField!
     
@@ -34,6 +35,7 @@ class LoginController: UIViewController {
         setUpButton()
         dissmissKeyBoard()
         setUpKeyBoardObservers()
+        loading.isHidden = true
     }
     
     func dissmissKeyBoard() {
@@ -81,6 +83,8 @@ class LoginController: UIViewController {
         }
    
     @IBAction func btnLogin(_ sender: Any) {
+        loading.isHidden = false
+        loading.startAnimating()
         guard let email = txtEmail.text, let pass = txtPassword.text else {return}
              
              print(email, pass)
@@ -90,8 +94,10 @@ class LoginController: UIViewController {
                  }
                  self.messageController?.fectUserAndSetUpNavBarTitle()
                 let vc = ViewController()
-                self.navigationController?.pushViewController(vc, animated: true)
-//                 self.dismiss(animated: true, completion: nil)
+                self.loading.stopAnimating()
+                self.loading.isHidden = true
+        self.navigationController?.pushViewController(vc, animated: true)
+
              }
     }
     

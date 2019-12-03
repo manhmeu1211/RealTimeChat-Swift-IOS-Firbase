@@ -10,6 +10,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LoginController" customModule="realTimeChatApp" customModuleProvider="target">
             <connections>
                 <outlet property="imgLogo" destination="Uit-Ml-6md" id="VN1-GH-V2a"/>
+                <outlet property="loading" destination="Xzf-qi-1jZ" id="MWu-b6-gqZ"/>
                 <outlet property="scrollView" destination="5ek-hX-1lF" id="yOY-bQ-mfg"/>
                 <outlet property="txtEmail" destination="MXD-5E-5hX" id="arm-qr-piZ"/>
                 <outlet property="txtPassword" destination="KJb-HX-Sv6" id="gkg-uL-bvU"/>
@@ -73,6 +74,9 @@
                                         <action selector="btnRegister:" destination="-1" eventType="touchUpInside" id="VEs-ik-1aK"/>
                                     </connections>
                                 </button>
+                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="Xzf-qi-1jZ">
+                                    <rect key="frame" x="197" y="558" width="20" height="37"/>
+                                </activityIndicatorView>
                             </subviews>
                             <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                             <constraints>
@@ -84,6 +88,8 @@
                                 <constraint firstItem="kHs-fT-Lnj" firstAttribute="leading" secondItem="eUf-Go-rpE" secondAttribute="leading" constant="20" id="FY7-9H-lZ1"/>
                                 <constraint firstItem="kHs-fT-Lnj" firstAttribute="top" secondItem="9A9-mc-r4d" secondAttribute="bottom" constant="20" id="L8X-m1-xLH"/>
                                 <constraint firstItem="KJb-HX-Sv6" firstAttribute="leading" secondItem="eUf-Go-rpE" secondAttribute="leading" constant="20" id="NXo-qH-7J8"/>
+                                <constraint firstItem="Xzf-qi-1jZ" firstAttribute="top" secondItem="QoH-Hr-Zyc" secondAttribute="bottom" constant="20" id="NxI-xx-vKK"/>
+                                <constraint firstAttribute="trailing" secondItem="Xzf-qi-1jZ" secondAttribute="trailing" constant="197" id="PRF-K4-cYe"/>
                                 <constraint firstItem="QoH-Hr-Zyc" firstAttribute="top" secondItem="kHs-fT-Lnj" secondAttribute="bottom" constant="10" id="PqC-aT-dPx"/>
                                 <constraint firstItem="QoH-Hr-Zyc" firstAttribute="leading" secondItem="eUf-Go-rpE" secondAttribute="leading" constant="50" id="RRf-4f-i29"/>
                                 <constraint firstItem="Uit-Ml-6md" firstAttribute="leading" secondItem="eUf-Go-rpE" secondAttribute="leading" constant="15" id="Ujf-Gy-SGT"/>
@@ -93,6 +99,7 @@
                                 <constraint firstAttribute="trailing" secondItem="QoH-Hr-Zyc" secondAttribute="trailing" constant="50" id="hf3-RC-o8D"/>
                                 <constraint firstAttribute="trailing" secondItem="Uit-Ml-6md" secondAttribute="trailing" constant="15" id="hiT-X5-Dhd"/>
                                 <constraint firstItem="Uit-Ml-6md" firstAttribute="top" secondItem="eUf-Go-rpE" secondAttribute="top" constant="15" id="rvd-Fz-ZXB"/>
+                                <constraint firstItem="Xzf-qi-1jZ" firstAttribute="leading" secondItem="eUf-Go-rpE" secondAttribute="leading" constant="197" id="tIH-3q-SlG"/>
                                 <constraint firstItem="dWJ-Uy-Szx" firstAttribute="top" secondItem="Uit-Ml-6md" secondAttribute="bottom" constant="10" id="tRL-dJ-MmY"/>
                                 <constraint firstItem="MXD-5E-5hX" firstAttribute="leading" secondItem="eUf-Go-rpE" secondAttribute="leading" constant="20" id="xJw-1E-KcH"/>
                                 <constraint firstAttribute="trailing" secondItem="dWJ-Uy-Szx" secondAttribute="trailing" constant="20" id="xTj-q0-5Ag"/>

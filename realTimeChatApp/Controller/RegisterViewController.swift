@@ -11,7 +11,10 @@ import Firebase
 
 class RegisterViewController: UIViewController {
     
-
+    @IBOutlet weak var lblValidate: UILabel!
+    
+    @IBOutlet weak var loading: UIActivityIndicatorView!
+    
     @IBOutlet weak var scrollView: UIScrollView!
     
     @IBOutlet weak var imageLogo: UIImageView!
@@ -31,6 +34,8 @@ class RegisterViewController: UIViewController {
     
     @IBOutlet var selectImage: UITapGestureRecognizer!
     
+    
+    
 
     var messageController : ViewController?
     override func viewDidLoad() {
@@ -39,6 +44,8 @@ class RegisterViewController: UIViewController {
         setUpImageSelected()
         setTapToDissMissKeyBoard()
         setUpKeyBoardObservers()
+        loading.isHidden = true
+        lblValidate.isHidden = true
     }
     
     func setTapToDissMissKeyBoard() {
@@ -96,41 +103,60 @@ class RegisterViewController: UIViewController {
       }
     
     
-
+    func isValidEmail(testStr:String) -> Bool {
+        let emailRegEx = "^(?:(?:(?:(?: )*(?:(?:(?:\\t| )*\\r\\n)?(?:\\t| )+))+(?: )*)|(?: )+)?(?:(?:(?:[-A-Za-z0-9!#$%&’*+/=?^_'{|}~]+(?:\\.[-A-Za-z0-9!#$%&’*+/=?^_'{|}~]+)*)|(?:\"(?:(?:(?:(?: )*(?:(?:[!#-Z^-~]|\\[|\\])|(?:\\\\(?:\\t|[ -~]))))+(?: )*)|(?: )+)\"))(?:@)(?:(?:(?:[A-Za-z0-9](?:[-A-Za-z0-9]{0,61}[A-Za-z0-9])?)(?:\\.[A-Za-z0-9](?:[-A-Za-z0-9]{0,61}[A-Za-z0-9])?)*)|(?:\\[(?:(?:(?:(?:(?:[0-9]|(?:[1-9][0-9])|(?:1[0-9][0-9])|(?:2[0-4][0-9])|(?:25[0-5]))\\.){3}(?:[0-9]|(?:[1-9][0-9])|(?:1[0-9][0-9])|(?:2[0-4][0-9])|(?:25[0-5]))))|(?:(?:(?: )*[!-Z^-~])*(?: )*)|(?:[Vv][0-9A-Fa-f]+\\.[-A-Za-z0-9._~!$&'()*+,;=:]+))\\])))(?:(?:(?:(?: )*(?:(?:(?:\\t| )*\\r\\n)?(?:\\t| )+))+(?: )*)|(?: )+)?$"
+        let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        let result = emailTest.evaluate(with: testStr)
+        print(result)
+        return result
+    }
     
     @IBAction func btnRegister(_ sender: Any) {
         guard let username = txtUsername.text, let email = txtEmail.text, let password = txtPassword.text else {
-                  print("Form is not valid")
                   return
               }
-              Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
-                  if error != nil {
-                  
-                      return
-                  }
-                  guard let uid = user?.user.uid else {
-                          return
-                      }
-                  let imageName = NSUUID().uuidString
-                  let storage = Storage.storage().reference().child("ProfileImage").child("\(imageName).jpg")
-                  if let uploadData = self.imageLogo.image?.jpegData(compressionQuality: 0.1)
-                  {
-                      storage.putData(uploadData, metadata: nil) { (metadata, error) in
-                      if error != nil {
-                       
-                          return
-                      }
-                     storage.downloadURL(completion: { (url, err) in
-                                guard let downloadURL = url else {
-                                  return
-                                }
-                      let image = downloadURL.absoluteString
-                      let values = ["username": username, "email": email, "profileImage" : image]
-                      self.regiterUser(uid: uid, values: values as [String : AnyObject])
-                          })
-                      }
-                  }
-              }
+        
+        if isValidEmail(testStr: email) == false {
+            
+            lblValidate.isHidden = false
+            lblValidate.text = "Email không hợp lệ vui lòng thử lại"
+            
+        } else {
+            loading.isHidden = false
+            loading.startAnimating()
+            lblValidate.isHidden = true
+            Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
+                             if error != nil {
+                             
+                                 return
+                             }
+                             guard let uid = user?.user.uid else {
+                                     return
+                                 }
+                             let imageName = NSUUID().uuidString
+                             let storage = Storage.storage().reference().child("ProfileImage").child("\(imageName).jpg")
+                             if let uploadData = self.imageLogo.image?.jpegData(compressionQuality: 0.1)
+                             {
+                                 storage.putData(uploadData, metadata: nil) { (metadata, error) in
+                                 if error != nil {
+                                  
+                                     return
+                                 }
+                                storage.downloadURL(completion: { (url, err) in
+                                           guard let downloadURL = url else {
+                                             return
+                                           }
+                                 let image = downloadURL.absoluteString
+                                 let values = ["username": username, "email": email, "profileImage" : image]
+                                 self.regiterUser(uid: uid, values: values as [String : AnyObject])
+                                     })
+                                 }
+                             }
+                         }
+        }
+        
+        
+             
     }
     
     
@@ -144,10 +170,14 @@ class RegisterViewController: UIViewController {
                             print(err!)
                             return
                     }
+                    self.loading.stopAnimating()
+                    self.loading.isHidden = true
                     self.navigationItem.title = values["name"] as? String 
                     self.dismiss(animated: true, completion: nil)
                 }
     }
+    
+ 
 }
 
 extension RegisterViewController : UIImagePickerControllerDelegate, UINavigationControllerDelegate {

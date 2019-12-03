@@ -10,6 +10,8 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RegisterViewController" customModule="realTimeChatApp" customModuleProvider="target">
             <connections>
                 <outlet property="imageLogo" destination="0St-JH-8Ke" id="ybE-Dc-Eom"/>
+                <outlet property="lblValidate" destination="3Az-zO-AdF" id="urg-xT-S0a"/>
+                <outlet property="loading" destination="45K-Vi-puR" id="XvN-gt-pHo"/>
                 <outlet property="scrollView" destination="yWT-bC-uPk" id="rF4-To-X1s"/>
                 <outlet property="selectImage" destination="XWr-wc-Ub0" id="TqK-Sa-GHg"/>
                 <outlet property="txtEmail" destination="3x0-BL-9YO" id="0cB-PC-5Ti"/>
@@ -67,6 +69,15 @@
                                         <action selector="btnRegister:" destination="-1" eventType="touchUpInside" id="rYN-YM-30b"/>
                                     </connections>
                                 </button>
+                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="45K-Vi-puR">
+                                    <rect key="frame" x="197" y="566" width="20" height="37"/>
+                                </activityIndicatorView>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Az-zO-AdF">
+                                    <rect key="frame" x="20" y="623" width="374" height="21"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
                             </subviews>
                             <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                             <constraints>
@@ -76,16 +87,22 @@
                                 <constraint firstItem="QRx-pq-wae" firstAttribute="top" secondItem="3x0-BL-9YO" secondAttribute="bottom" constant="20" id="FoJ-Ef-M3d"/>
                                 <constraint firstAttribute="trailing" secondItem="DsH-Eh-MG5" secondAttribute="trailing" constant="20" id="Jhw-XT-3Nn"/>
                                 <constraint firstAttribute="trailing" secondItem="3x0-BL-9YO" secondAttribute="trailing" constant="20" id="Jmd-Yo-xmE"/>
+                                <constraint firstItem="45K-Vi-puR" firstAttribute="leading" secondItem="5ti-UJ-z79" secondAttribute="leading" constant="197" id="MEE-IQ-QIq"/>
                                 <constraint firstAttribute="trailing" secondItem="QRx-pq-wae" secondAttribute="trailing" constant="20" id="NN9-eo-EQ1"/>
+                                <constraint firstAttribute="trailing" secondItem="3Az-zO-AdF" secondAttribute="trailing" constant="20" id="OcD-DR-C0g"/>
                                 <constraint firstAttribute="trailing" secondItem="N8m-pq-mw1" secondAttribute="trailing" constant="30" id="QKA-T2-mbC"/>
+                                <constraint firstItem="3Az-zO-AdF" firstAttribute="top" secondItem="45K-Vi-puR" secondAttribute="bottom" constant="20" id="R8z-uD-cKN"/>
                                 <constraint firstItem="0St-JH-8Ke" firstAttribute="height" secondItem="5ti-UJ-z79" secondAttribute="height" multiplier="1/3" id="So1-8G-N2w"/>
+                                <constraint firstItem="3Az-zO-AdF" firstAttribute="leading" secondItem="5ti-UJ-z79" secondAttribute="leading" constant="20" id="SwP-BM-DaJ"/>
                                 <constraint firstItem="i3q-XA-E2e" firstAttribute="leading" secondItem="5ti-UJ-z79" secondAttribute="leading" constant="20" id="WfF-v0-c51"/>
                                 <constraint firstItem="3x0-BL-9YO" firstAttribute="leading" secondItem="5ti-UJ-z79" secondAttribute="leading" constant="20" id="Z4L-Ms-SEg"/>
                                 <constraint firstItem="DsH-Eh-MG5" firstAttribute="leading" secondItem="5ti-UJ-z79" secondAttribute="leading" constant="20" id="bZq-v7-Grl"/>
                                 <constraint firstItem="3x0-BL-9YO" firstAttribute="top" secondItem="DsH-Eh-MG5" secondAttribute="bottom" constant="20" id="bsF-uq-YcA"/>
                                 <constraint firstItem="i3q-XA-E2e" firstAttribute="top" secondItem="0St-JH-8Ke" secondAttribute="bottom" constant="15" id="c7W-zE-hdz"/>
+                                <constraint firstItem="45K-Vi-puR" firstAttribute="top" secondItem="N8m-pq-mw1" secondAttribute="bottom" constant="20" id="ee2-nd-LMm"/>
                                 <constraint firstItem="N8m-pq-mw1" firstAttribute="top" secondItem="QRx-pq-wae" secondAttribute="bottom" constant="20" id="jaw-c8-Trl"/>
                                 <constraint firstItem="N8m-pq-mw1" firstAttribute="leading" secondItem="5ti-UJ-z79" secondAttribute="leading" constant="30" id="noJ-ck-jx7"/>
+                                <constraint firstAttribute="trailing" secondItem="45K-Vi-puR" secondAttribute="trailing" constant="197" id="oHG-D5-KFd"/>
                                 <constraint firstAttribute="trailing" secondItem="0St-JH-8Ke" secondAttribute="trailing" constant="15" id="olT-kQ-8cd"/>
                                 <constraint firstItem="QRx-pq-wae" firstAttribute="leading" secondItem="5ti-UJ-z79" secondAttribute="leading" constant="20" id="wJe-Ua-mk5"/>
                                 <constraint firstAttribute="trailing" secondItem="i3q-XA-E2e" secondAttribute="trailing" constant="20" id="yY3-xp-tc4"/>
