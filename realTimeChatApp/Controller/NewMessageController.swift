@@ -45,14 +45,10 @@ class NewMessageController: UIViewController {
                 user.email = dictionary["email"] as? String
                 user.username = dictionary["username"] as? String
                 user.imageURL = dictionary["profileImage"] as? String
-                
                 self.users.append(user)
-           
                 DispatchQueue.main.async {
                      self.messageTable.reloadData()
                 }
-                
-
             }
 
         }, withCancel: nil)

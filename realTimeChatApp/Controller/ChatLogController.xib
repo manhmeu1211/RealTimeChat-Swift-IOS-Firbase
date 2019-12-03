@@ -53,6 +53,9 @@
                                     </constraints>
                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
                                     <state key="normal" title="Send"/>
+                                    <connections>
+                                        <action selector="btnSend:" destination="-1" eventType="touchUpInside" id="kNH-Pv-Mca"/>
+                                    </connections>
                                 </button>
                             </subviews>
                             <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>

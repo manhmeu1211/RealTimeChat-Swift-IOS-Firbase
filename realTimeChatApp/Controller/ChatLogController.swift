@@ -145,10 +145,10 @@ class ChatLogController: UIViewController, UITextFieldDelegate {
     }
     
  
-    @IBAction func btnSend(_ sender: Any) {
-         handleSend()
-    }
     
+    @IBAction func btnSend(_ sender: Any) {
+        handleSend()
+    }
     
     func handleSend() {
         if txtMessage.text!.isEmpty {
@@ -244,11 +244,6 @@ extension ChatLogController: UICollectionViewDataSource, UICollectionViewDelegat
         return CGSize(width: view.frame.width, height: height)
     }
     
-   
-    
-    
-
-    
     
     func estimateFrameForText(text: String) -> CGRect {
         let size = CGSize(width: 200, height: 10000)
@@ -260,4 +255,7 @@ extension ChatLogController: UICollectionViewDataSource, UICollectionViewDelegat
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         chatLogCollection.collectionViewLayout.invalidateLayout()
     }
+    
+    
+    
 }
