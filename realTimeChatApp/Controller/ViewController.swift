@@ -24,6 +24,8 @@ class ViewController: UITableViewController {
         notiFication()
         
     }
+    
+      // MARK: - Func
 
     func setUpNavItem() {
           navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "log-out.png"), style: UIBarButtonItem.Style.plain, target: self, action: #selector(handleLogout))
@@ -39,7 +41,6 @@ class ViewController: UITableViewController {
     }
     
     func observeUserMessages() {
-        
         guard let uid = Auth.auth().currentUser?.uid else {
             return
         }
@@ -137,6 +138,10 @@ class ViewController: UITableViewController {
     }
     
     
+    
+      // MARK: - TableView
+    
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return messages.count
     }
@@ -167,8 +172,6 @@ class ViewController: UITableViewController {
             user.imageURL = dictionary["profileImage"] as? String
             self.showChatController(user: user)
         }, withCancel: nil)
-        
-        
     }
     
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -193,11 +196,10 @@ class ViewController: UITableViewController {
             }
         }
     }
-    
 }
 
 
-
+  // MARK: - Notification
 
 extension ViewController : UNUserNotificationCenterDelegate {
     
@@ -216,22 +218,18 @@ extension ViewController : UNUserNotificationCenterDelegate {
         content.title = "Check new Message"
         content.body = "Tapped cho check your message"
         content.sound = UNNotificationSound.default
-          
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 10,
           repeats: false)
 
         let identifier = "UYLLocalNotification"
         let request = UNNotificationRequest(identifier: identifier,
                         content: content, trigger: trigger)
-          
-          center.add(request, withCompletionHandler: { (error) in
-            if let error = error {
+        center.add(request, withCompletionHandler: { (error) in
+        if let error = error {
              print(error)
             }
-              print("notification")
           })
     }
-    
 }
 
 

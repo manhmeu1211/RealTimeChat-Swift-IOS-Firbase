@@ -12,32 +12,17 @@ import Firebase
 class RegisterViewController: UIViewController {
     
     @IBOutlet weak var lblValidate: UILabel!
-    
     @IBOutlet weak var loading: UIActivityIndicatorView!
-    
     @IBOutlet weak var scrollView: UIScrollView!
-    
     @IBOutlet weak var imageLogo: UIImageView!
-    
-
     @IBOutlet weak var txtUsername: UITextField!
-    
-   
     @IBOutlet weak var txtEmail: UITextField!
-    
- 
-    
     @IBOutlet weak var txtPassword: UITextField!
-    
-  
     @IBOutlet weak var uiButtonRegiter: UIButton!
-    
     @IBOutlet var selectImage: UITapGestureRecognizer!
-    
-    
-    
-
     var messageController : ViewController?
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpButton()
@@ -47,6 +32,8 @@ class RegisterViewController: UIViewController {
         loading.isHidden = true
         lblValidate.isHidden = true
     }
+    
+   // MARK: - Func
     
     func setTapToDissMissKeyBoard() {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
@@ -76,6 +63,7 @@ class RegisterViewController: UIViewController {
         uiButtonRegiter.layer.borderColor = UIColor.systemPink.cgColor
     }
     
+    
     func setUpKeyBoardObservers() {
           let notificationCenter = NotificationCenter.default
           notificationCenter.addObserver(self, selector: #selector(handleKeyBoardShow), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -84,22 +72,17 @@ class RegisterViewController: UIViewController {
         
       
       
-        @objc func handleKeyBoardShow(notification: Notification) {
-          
-          guard let userInfo = notification.userInfo else { return }
-          
-          guard let keyboardSize = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {return}
-          
-          let keyboardFrame = keyboardSize.cgRectValue
-          
-          let contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardFrame.height, right: 0)
-          scrollView.contentInset = contentInset
+    @objc func handleKeyBoardShow(notification: Notification) {
+        guard let userInfo = notification.userInfo else { return }
+        guard let keyboardSize = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {return}
+        let keyboardFrame = keyboardSize.cgRectValue
+        let contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardFrame.height, right: 0)
+        scrollView.contentInset = contentInset
       }
         
       
-      @objc func handleKeyBoardHide(notification : Notification) {
-          scrollView.contentInset = UIEdgeInsets.zero
-
+    @objc func handleKeyBoardHide(notification : Notification) {
+        scrollView.contentInset = UIEdgeInsets.zero
       }
     
     
@@ -111,94 +94,79 @@ class RegisterViewController: UIViewController {
         return result
     }
     
+    
+    func regiterUser(uid: String, values : [String:AnyObject]) {
+        var ref: DatabaseReference!
+        ref = Database.database().reference(fromURL: "https://chatapp-manhld.firebaseio.com/")
+        let usersReference = ref.child("users").child(uid)
+        usersReference.updateChildValues(values) { (err, ref) in
+            if err != nil {
+                print(err!)
+                return
+            }
+        self.loading.stopAnimating()
+        self.loading.isHidden = true
+        self.navigationItem.title = values["name"] as? String
+        let alertResgiserSuccess : UIAlertController = UIAlertController(title: "Register Success", message: "Login to chat now !", preferredStyle: UIAlertController.Style.alert)
+        let btnOK: UIAlertAction = UIAlertAction(title: "OK", style: .default) { (UIAlertAction) in
+            self.dismiss(animated: true, completion: nil)
+            }
+        alertResgiserSuccess.addAction(btnOK)
+        self.present(alertResgiserSuccess, animated: true, completion: nil)
+        }
+    }
+    
+    
+    // MARK: - IBAction
+
     @IBAction func btnRegister(_ sender: Any) {
+        dismissKeyboard()
         guard let username = txtUsername.text, let email = txtEmail.text, let password = txtPassword.text else {
                   return
               }
-        
         if isValidEmail(testStr: email) == false {
-            
             lblValidate.isHidden = false
             lblValidate.text = "Email không hợp lệ vui lòng thử lại"
-            
         } else {
             loading.isHidden = false
             loading.startAnimating()
             lblValidate.isHidden = true
             Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
-                             if error != nil {
-                             
-                                 return
-                             }
-                             guard let uid = user?.user.uid else {
-                                     return
-                                 }
-                             let imageName = NSUUID().uuidString
-                             let storage = Storage.storage().reference().child("ProfileImage").child("\(imageName).jpg")
-                             if let uploadData = self.imageLogo.image?.jpegData(compressionQuality: 0.1)
-                             {
-                                 storage.putData(uploadData, metadata: nil) { (metadata, error) in
-                                 if error != nil {
-                                  
-                                     return
-                                 }
-                                storage.downloadURL(completion: { (url, err) in
-                                           guard let downloadURL = url else {
-                                             return
-                                           }
+                if error != nil {
+                    return
+                }
+                guard let uid = user?.user.uid else {
+                    return
+                }
+                let imageName = NSUUID().uuidString
+                let storage = Storage.storage().reference().child("ProfileImage").child("\(imageName).jpg")
+                if let uploadData = self.imageLogo.image?.jpegData(compressionQuality: 0.1) {
+                    storage.putData(uploadData, metadata: nil) { (metadata, error) in
+                        if error != nil {
+                            return
+                        }
+                        storage.downloadURL(completion: { (url, err) in
+                        guard let downloadURL = url else {
+                        return
+                        }
                                  let image = downloadURL.absoluteString
                                  let values = ["username": username, "email": email, "profileImage" : image]
                                  self.regiterUser(uid: uid, values: values as [String : AnyObject])
-                                     })
-                                 }
-                             }
-                         }
-        }
-        
-        
-             
-    }
-    
-    
-    func regiterUser(uid: String, values : [String:AnyObject]) {
-        
-                var ref: DatabaseReference!
-                ref = Database.database().reference(fromURL: "https://chatapp-manhld.firebaseio.com/")
-                let usersReference = ref.child("users").child(uid)
-                usersReference.updateChildValues(values) { (err, ref) in
-                    if err != nil {
-                            print(err!)
-                            return
+                        })
                     }
-                    self.loading.stopAnimating()
-                    self.loading.isHidden = true
-                    self.navigationItem.title = values["name"] as? String
-                    
-                    
-                    let alertResgiserSuccess : UIAlertController = UIAlertController(title: "Register Success", message: "Login to chat now !", preferredStyle: UIAlertController.Style.alert)
-                    let btnOK: UIAlertAction = UIAlertAction(title: "OK", style: .default) { (UIAlertAction) in
-                         self.dismiss(animated: true, completion: nil)
-                    }
-                    alertResgiserSuccess.addAction(btnOK)
-                    self.present(alertResgiserSuccess, animated: true, completion: nil)
-                    
                 }
+            }
+        }
     }
-    
-    
-    
- 
 }
 
 extension RegisterViewController : UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     @objc func hanldeSelectImage() {
-        
         let picker = UIImagePickerController()
         picker.delegate = self
         picker.allowsEditing = true
         present(picker, animated: true, completion: nil)
-        
     }
     
     

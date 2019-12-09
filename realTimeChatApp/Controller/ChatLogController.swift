@@ -14,28 +14,18 @@ class ChatLogController: UIViewController {
 
     @IBOutlet weak var btnMicro: UIButton!
     @IBOutlet weak var bottomView: UIView!
-    
     @IBOutlet weak var chatLogCollection: UICollectionView!
-    
     @IBOutlet weak var heightViewSend: NSLayoutConstraint!
-    
- 
     @IBOutlet weak var txtMessage: UITextView!
-    
     var containerContranst: NSLayoutConstraint!
-    
     var messages = [Message]()
-    
     var lastIndex : IndexPath!
-    
     var user : Users? {
         didSet {
             navigationItem.title = user?.username
         }
     }
-    
     var bottomConstraint : NSLayoutConstraint?
-    
     
      override func viewDidLoad() {
          super.viewDidLoad()
@@ -49,7 +39,6 @@ class ChatLogController: UIViewController {
         bottomConstraint = NSLayoutConstraint(item: bottomView!, attribute: NSLayoutConstraint.Attribute.bottom, relatedBy: NSLayoutConstraint.Relation.equal, toItem: view, attribute: NSLayoutConstraint.Attribute.bottom, multiplier: 1, constant: 0)
         view.addConstraint(bottomConstraint!)
         textViewDidChange(txtMessage)
-      
      }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -57,6 +46,7 @@ class ChatLogController: UIViewController {
             self.chatLogCollection.reloadData()
         }
     }
+      // MARK: - Func
     
     func setUpTextView() {
         txtMessage.delegate = self
@@ -71,10 +61,10 @@ class ChatLogController: UIViewController {
     }
     
     func observeMessages() {
+        
         guard let uid = Auth.auth().currentUser?.uid else {
             return
         }
-        
         let userMessagRef = Database.database().reference().child("user-message").child(uid)
         userMessagRef.observe(.childAdded, with: { (data) in
             let messageId = data.key
@@ -83,7 +73,6 @@ class ChatLogController: UIViewController {
                 guard let dictionaryMessage = dataMessage.value as? [String : Any] else {
                     return
                 }
-                
                 let messageData = Message()
                 messageData.fromID = dictionaryMessage["fromId"] as? String
                 messageData.text = dictionaryMessage["text"] as? String
@@ -101,17 +90,15 @@ class ChatLogController: UIViewController {
         }, withCancel: nil)
     }
     
-
     func setUpKeyBoardObservers() {
-        let notificationCenter = NotificationCenter.default
         
+        let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(handleKeyBoardShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(handleKeyBoardShow), name: UIResponder.keyboardWillHideNotification, object: nil)
-    
       }
       
     
-      @objc func handleKeyBoardShow(notification: Notification) {
+    @objc func handleKeyBoardShow(notification: Notification) {
         
         guard let userInfo = notification.userInfo else { return }
         
@@ -128,7 +115,7 @@ class ChatLogController: UIViewController {
         }) { (completed) in
             self.chatLogCollection.scrollToItem(at: IndexPath(item: self.messages.count - 1, section: 0), at: UICollectionView.ScrollPosition.bottom, animated: true)
         }
-      }
+    }
     
   
     
@@ -156,44 +143,45 @@ class ChatLogController: UIViewController {
        
     }
     
+      func handleSend() {
+          if txtMessage.text!.isEmpty {
+          } else {
+                let ref = Database.database().reference().child("message")
+                let childRef = ref.childByAutoId()
+                let toId = user!.id!
+                let fromId = Auth.auth().currentUser!.uid
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "MM-dd-yyyy HH:mm"
+                let timestamp = dateFormatter.string(from: NSDate() as Date)
+                let values = ["text" : txtMessage.text!, "toId": toId,
+                                    "fromId" : fromId, "timestamp": timestamp] as [String : Any]
+              //              childRef.updateChildValues(values)
+                childRef.updateChildValues(values) { (err, ref) in
+                    if err != nil {
+                        print(err!)
+                        return
+                    }
+                    guard let messageId = childRef.key else { return }
+                    let userMessagesRef = Database.database().reference().child("user-message").child(fromId).child(messageId)
+                              userMessagesRef.setValue(1)
+                    let recipientUserMessagesRef = Database.database().reference().child("user-message").child(toId).child(messageId)
+                                    recipientUserMessagesRef.setValue(1)
+                    self.txtMessage.text = ""
+                }
+          }
+      }
+    
+    
+      // MARK: - IBAction
  
     @IBAction func sendMesssage(_ sender: Any) {
         handleSend()
     }
-    
-    func handleSend() {
-        if txtMessage.text!.isEmpty {
-        } else {
-             let ref = Database.database().reference().child("message")
-                    let childRef = ref.childByAutoId()
-                    let toId = user!.id!
-                    let fromId = Auth.auth().currentUser!.uid
-                    let dateFormatter = DateFormatter()
-                    dateFormatter.dateFormat = "MM-dd-yyyy HH:mm"
-                    let timestamp = dateFormatter.string(from: NSDate() as Date)
-                    let values = ["text" : txtMessage.text!, "toId": toId,
-                                  "fromId" : fromId, "timestamp": timestamp] as [String : Any]
-            //              childRef.updateChildValues(values)
-                    childRef.updateChildValues(values) { (err, ref) in
-                        if err != nil {
-                            print(err!)
-                            return
-                        }
-                        guard let messageId = childRef.key else { return }
-                        let userMessagesRef = Database.database().reference().child("user-message").child(fromId).child(messageId)
-                            userMessagesRef.setValue(1)
-                        let recipientUserMessagesRef = Database.database().reference().child("user-message").child(toId).child(messageId)
-                                  recipientUserMessagesRef.setValue(1)
-                        self.txtMessage.text = ""
-                    }
-        }
-    }
-    
 }
 
+ // MARK: - TextView
 
 extension ChatLogController : UITextViewDelegate {
-    
       func textViewDidBeginEditing(_ textView: UITextView) {
           if self.txtMessage.textColor == UIColor.lightGray {
               self.txtMessage.text = nil
@@ -215,10 +203,11 @@ extension ChatLogController : UITextViewDelegate {
 }
 
 
+ // MARK: - CollectionView
+
 extension ChatLogController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout  {
      
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
         return messages.count
     }
     
@@ -284,7 +273,4 @@ extension ChatLogController: UICollectionViewDataSource, UICollectionViewDelegat
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         chatLogCollection.collectionViewLayout.invalidateLayout()
     }
-    
-    
-    
 }
