@@ -27,8 +27,7 @@ class UserCell: UITableViewCell {
                               if let dictionary = snapshot.value as? [String: Any] {
                                 self.textLabel?.text = dictionary["username"] as? String
                                   if let profileImgURL = dictionary["profileImage"]  as? String {
-                                      let queue = DispatchQueue(label: "LoadHinh")
-                                   
+                                      let queue = DispatchQueue(label: "imageLoading")
                                       queue.async {
                                           NetWorkService.getInstance.loadImageFromInternet(url: profileImgURL) { (data, mess) in
                                               if mess == "Success" {
@@ -86,6 +85,10 @@ class UserCell: UITableViewCell {
         profileImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         profileImageView.widthAnchor.constraint(equalToConstant: 70).isActive = true
         profileImageView.heightAnchor.constraint(equalToConstant: 70).isActive = true
+        profileImageView.layer.masksToBounds = false
+        profileImageView.layer.cornerRadius = profileImageView.frame.height/2
+        profileImageView.clipsToBounds = true
+        profileImageView.contentMode = .scaleToFill
         
         
         timeLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: 10).isActive = true
@@ -102,8 +105,6 @@ class UserCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-    
-        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

@@ -9,20 +9,18 @@
 import UIKit
 import Firebase
 
-class ChatLogController: UIViewController, UITextFieldDelegate {
+class ChatLogController: UIViewController {
 
 
-    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var btnMicro: UIButton!
+    @IBOutlet weak var bottomView: UIView!
     
     @IBOutlet weak var chatLogCollection: UICollectionView!
     
- 
-    @IBOutlet weak var btnSendUi: UIButton!
-    
+    @IBOutlet weak var heightViewSend: NSLayoutConstraint!
     
  
-    @IBOutlet weak var txtMessage: UITextField!
-    
+    @IBOutlet weak var txtMessage: UITextView!
     
     var containerContranst: NSLayoutConstraint!
     
@@ -33,30 +31,43 @@ class ChatLogController: UIViewController, UITextFieldDelegate {
     var user : Users? {
         didSet {
             navigationItem.title = user?.username
-           
         }
     }
     
+    var bottomConstraint : NSLayoutConstraint?
+    
+    
      override func viewDidLoad() {
          super.viewDidLoad()
-        txtMessage.delegate = self
+        setUpTextView()
         setUpCollectionView()
         dismissKeyboard()
         setUpKeyBoardObservers()
         observeMessages()
         messages.removeAll()
         chatLogCollection.reloadData()
-        
+        bottomConstraint = NSLayoutConstraint(item: bottomView!, attribute: NSLayoutConstraint.Attribute.bottom, relatedBy: NSLayoutConstraint.Relation.equal, toItem: view, attribute: NSLayoutConstraint.Attribute.bottom, multiplier: 1, constant: 0)
+        view.addConstraint(bottomConstraint!)
+        textViewDidChange(txtMessage)
+      
      }
-    
-    override func viewWillAppear(_ animated: Bool) {
-    }
- 
     
     override func viewDidAppear(_ animated: Bool) {
          DispatchQueue.main.async {
             self.chatLogCollection.reloadData()
         }
+    }
+    
+    func setUpTextView() {
+        txtMessage.delegate = self
+        txtMessage.isScrollEnabled = true
+        txtMessage.layer.borderWidth = 0.5
+        txtMessage.layer.cornerRadius = 5
+        txtMessage.layer.borderColor = UIColor.systemGray.cgColor
+        txtMessage.text = "Aa"
+        txtMessage.textColor = UIColor.lightGray
+        txtMessage.becomeFirstResponder()
+        txtMessage.selectedTextRange = txtMessage.textRange(from: txtMessage.beginningOfDocument, to: txtMessage.beginningOfDocument)
     }
     
     func observeMessages() {
@@ -72,7 +83,7 @@ class ChatLogController: UIViewController, UITextFieldDelegate {
                 guard let dictionaryMessage = dataMessage.value as? [String : Any] else {
                     return
                 }
-              
+                
                 let messageData = Message()
                 messageData.fromID = dictionaryMessage["fromId"] as? String
                 messageData.text = dictionaryMessage["text"] as? String
@@ -90,18 +101,15 @@ class ChatLogController: UIViewController, UITextFieldDelegate {
         }, withCancel: nil)
     }
     
-  
-  
- 
 
     func setUpKeyBoardObservers() {
         let notificationCenter = NotificationCenter.default
+        
         notificationCenter.addObserver(self, selector: #selector(handleKeyBoardShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(handleKeyBoardHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(handleKeyBoardShow), name: UIResponder.keyboardWillHideNotification, object: nil)
     
       }
       
-    
     
       @objc func handleKeyBoardShow(notification: Notification) {
         
@@ -111,15 +119,18 @@ class ChatLogController: UIViewController, UITextFieldDelegate {
         
         let keyboardFrame = keyboardSize.cgRectValue
         
-       let contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardFrame.height, right: 0)
-                  scrollView.contentInset = contentInset
+        let isKeyBoardShowing = notification.name == UIResponder.keyboardWillShowNotification
+        
+        bottomConstraint?.constant = isKeyBoardShowing ? -keyboardFrame.height: 0
+
+        UIView.animate(withDuration: 0, delay: 0, options: UIView.AnimationOptions.curveEaseOut, animations: {
+            self.view.layoutIfNeeded()
+        }) { (completed) in
+            self.chatLogCollection.scrollToItem(at: IndexPath(item: self.messages.count - 1, section: 0), at: UICollectionView.ScrollPosition.bottom, animated: true)
+        }
       }
     
-    @objc func handleKeyBoardHide(notification : Notification) {
-        scrollView.contentInset = UIEdgeInsets.zero
-    }
-    
-    
+  
     
     
     func dissmissKeyBoard() {
@@ -132,7 +143,6 @@ class ChatLogController: UIViewController, UITextFieldDelegate {
        }
 
      
-    
     func setUpCollectionView() {
         chatLogCollection.dataSource = self
         chatLogCollection.delegate = self
@@ -147,8 +157,7 @@ class ChatLogController: UIViewController, UITextFieldDelegate {
     }
     
  
-    
-    @IBAction func btnSend(_ sender: Any) {
+    @IBAction func sendMesssage(_ sender: Any) {
         handleSend()
     }
     
@@ -165,7 +174,6 @@ class ChatLogController: UIViewController, UITextFieldDelegate {
                     let values = ["text" : txtMessage.text!, "toId": toId,
                                   "fromId" : fromId, "timestamp": timestamp] as [String : Any]
             //              childRef.updateChildValues(values)
-                     
                     childRef.updateChildValues(values) { (err, ref) in
                         if err != nil {
                             print(err!)
@@ -181,18 +189,33 @@ class ChatLogController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        handleSend()
-        return true
+}
+
+
+extension ChatLogController : UITextViewDelegate {
+    
+      func textViewDidBeginEditing(_ textView: UITextView) {
+          if self.txtMessage.textColor == UIColor.lightGray {
+              self.txtMessage.text = nil
+              self.txtMessage.textColor = UIColor.black
+        }
     }
     
-    
+      func textViewDidEndEditing(_ textView: UITextView) {
+          if self.txtMessage.text.isEmpty {
+              self.txtMessage.text = "Aa"
+              self.txtMessage.textColor = UIColor.lightGray
+        }
+      }
+      
+      func textViewDidChange(_ textView: UITextView) {
+        self.heightViewSend.constant = self.txtMessage.contentSize.height + 24
+        
+    }
 }
 
 
 extension ChatLogController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout  {
-        
-  
      
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
@@ -232,7 +255,6 @@ extension ChatLogController: UICollectionViewDataSource, UICollectionViewDelegat
         }
         cell.bubbleWidthAnchor?.constant = estimateFrameForText(text: message.text!).width + 35
         
-        
         return cell
     }
     
@@ -245,6 +267,10 @@ extension ChatLogController: UICollectionViewDataSource, UICollectionViewDelegat
             height = estimateFrameForText(text: text).height + 30
         }
         return CGSize(width: view.frame.width, height: height)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        bottomView.endEditing(true)
     }
     
     

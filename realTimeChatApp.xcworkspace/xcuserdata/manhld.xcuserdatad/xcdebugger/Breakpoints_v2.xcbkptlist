@@ -39,118 +39,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "AB313717-18FE-4814-98BC-639E9E5CC090"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "realTimeChatApp/Controller/ViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "117"
-            endingLineNumber = "117"
-            landmarkName = "ViewController"
-            landmarkType = "3">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "CC16768C-BB4F-465D-8F38-7C015AECC742"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "realTimeChatApp/Controller/ViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "119"
-            endingLineNumber = "119"
-            landmarkName = "ViewController"
-            landmarkType = "3">
-            <Locations>
-               <Location
-                  uuid = "CC16768C-BB4F-465D-8F38-7C015AECC742 - 6dcde0856732003b"
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "realTimeChatApp.ViewController.fectUserAndSetUpNavBarTitle() -&gt; ()"
-                  moduleName = "realTimeChatApp"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/manhld/Desktop/realTimeChatApp/realTimeChatApp/Controller/ViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "112"
-                  endingLineNumber = "112"
-                  offsetFromSymbolStart = "1059">
-               </Location>
-               <Location
-                  uuid = "CC16768C-BB4F-465D-8F38-7C015AECC742 - 20fc5efcb827bb09"
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (__C.FIRDataSnapshot) -&gt; () in realTimeChatApp.ViewController.fectUserAndSetUpNavBarTitle() -&gt; ()"
-                  moduleName = "realTimeChatApp"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/manhld/Desktop/realTimeChatApp/realTimeChatApp/Controller/ViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "113"
-                  endingLineNumber = "113"
-                  offsetFromSymbolStart = "136">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "B66A1E27-E3BD-445B-B5B0-9112A1A5EFB8"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "realTimeChatApp/Controller/ViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "118"
-            endingLineNumber = "118"
-            landmarkName = "ViewController"
-            landmarkType = "3">
-            <Locations>
-               <Location
-                  uuid = "B66A1E27-E3BD-445B-B5B0-9112A1A5EFB8 - 6dcde0856732003b"
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "realTimeChatApp.ViewController.fectUserAndSetUpNavBarTitle() -&gt; ()"
-                  moduleName = "realTimeChatApp"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/manhld/Desktop/realTimeChatApp/realTimeChatApp/Controller/ViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "112"
-                  endingLineNumber = "112"
-                  offsetFromSymbolStart = "1059">
-               </Location>
-               <Location
-                  uuid = "B66A1E27-E3BD-445B-B5B0-9112A1A5EFB8 - 20fc5efcb827bb09"
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (__C.FIRDataSnapshot) -&gt; () in realTimeChatApp.ViewController.fectUserAndSetUpNavBarTitle() -&gt; ()"
-                  moduleName = "realTimeChatApp"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/manhld/Desktop/realTimeChatApp/realTimeChatApp/Controller/ViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "113"
-                  endingLineNumber = "113"
-                  offsetFromSymbolStart = "136">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "71C3DC32-ADA8-4987-A1E0-53550F0C3135"
             shouldBeEnabled = "No"
             ignoreCount = "0"
@@ -167,22 +55,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "5829EC07-8775-4424-A7CC-4564F82F069C"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "realTimeChatApp/Controller/ChatLogController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "112"
-            endingLineNumber = "112"
-            landmarkName = "handleKeyBoardShow(notification:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "1211F726-D183-437D-94E6-9A9F09FC236F"
             shouldBeEnabled = "No"
             ignoreCount = "0"
@@ -190,8 +62,8 @@
             filePath = "realTimeChatApp/Controller/ChatLogController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "82"
-            endingLineNumber = "82"
+            startingLineNumber = "94"
+            endingLineNumber = "94"
             landmarkName = "observeMessages()"
             landmarkType = "7">
          </BreakpointContent>
@@ -206,8 +78,8 @@
             filePath = "realTimeChatApp/Controller/ChatLogController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "204"
-            endingLineNumber = "204"
+            startingLineNumber = "227"
+            endingLineNumber = "227"
             landmarkName = "collectionView(_:cellForItemAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -222,8 +94,8 @@
             filePath = "realTimeChatApp/Controller/ChatLogController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "80"
-            endingLineNumber = "80"
+            startingLineNumber = "92"
+            endingLineNumber = "92"
             landmarkName = "observeMessages()"
             landmarkType = "7">
          </BreakpointContent>
@@ -238,8 +110,8 @@
             filePath = "realTimeChatApp/Controller/ChatLogController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "79"
-            endingLineNumber = "79"
+            startingLineNumber = "91"
+            endingLineNumber = "91"
             landmarkName = "observeMessages()"
             landmarkType = "7">
          </BreakpointContent>
@@ -254,8 +126,8 @@
             filePath = "realTimeChatApp/Controller/ChatLogController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "78"
-            endingLineNumber = "78"
+            startingLineNumber = "90"
+            endingLineNumber = "90"
             landmarkName = "observeMessages()"
             landmarkType = "7">
          </BreakpointContent>
@@ -270,8 +142,8 @@
             filePath = "realTimeChatApp/Controller/ChatLogController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "77"
-            endingLineNumber = "77"
+            startingLineNumber = "89"
+            endingLineNumber = "89"
             landmarkName = "observeMessages()"
             landmarkType = "7">
          </BreakpointContent>
@@ -286,8 +158,8 @@
             filePath = "realTimeChatApp/Controller/ChatLogController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "81"
-            endingLineNumber = "81"
+            startingLineNumber = "93"
+            endingLineNumber = "93"
             landmarkName = "observeMessages()"
             landmarkType = "7">
          </BreakpointContent>

@@ -11,6 +11,7 @@ import Firebase
 import UserNotifications
 
 class ViewController: UITableViewController {
+    
     var messages = [Message]()
     var messageDictionary = [String : Message]()
     var timer : Timer?
@@ -64,7 +65,6 @@ class ViewController: UITableViewController {
             }, withCancel: nil)
         }, withCancel: nil)
         
-        
         ref.observe(.childRemoved, with: { (data) in
             self.messageDictionary.removeValue(forKey: data.key)
             DispatchQueue.main.async {
@@ -78,7 +78,6 @@ class ViewController: UITableViewController {
     @objc func handleReloadTable() {
         DispatchQueue.main.async {
             self.tableView.reloadData()
-            
         }
     }
     
@@ -97,9 +96,7 @@ class ViewController: UITableViewController {
         messages.removeAll()
         messageDictionary.removeAll()
         tableView.reloadData()
-        
         observeUserMessages()
-        
         guard let uid = Auth.auth().currentUser?.uid else {
             return
         }
@@ -114,16 +111,11 @@ class ViewController: UITableViewController {
                       }, withCancel: nil)
     }
 
-
-    
-    
     func showChatController(user : Users) {
         let chatController = ChatLogController()
         chatController.user = user
         navigationController?.pushViewController(chatController, animated: true)
     }
-    
-    
     
     @objc func handleLogout() {
        do {
@@ -135,10 +127,7 @@ class ViewController: UITableViewController {
         let loginController = LoginController()
       loginController.messageController = self
         navigationController?.pushViewController(loginController, animated: true)
-//        present(loginController, animated: true, completion: nil)
-      
      }
-    
     
     @objc func handleNewMessage() {
         let newMessageVC = NewMessageController()
@@ -146,7 +135,6 @@ class ViewController: UITableViewController {
         let navController = UINavigationController(rootViewController: newMessageVC)
         present(navController, animated: true, completion: nil)
     }
-    
     
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -160,8 +148,6 @@ class ViewController: UITableViewController {
         return cell
     }
     
-    
-    
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 72
     }
@@ -172,7 +158,6 @@ class ViewController: UITableViewController {
         guard let chatPartnerId = message.chatPartnerid() else { return }
         let ref = Database.database().reference().child("users").child(chatPartnerId)
         ref.observeSingleEvent(of: .value, with: { (data) in
-          
             guard let dictionary = data.value as? [String : Any] else { return }
             print(dictionary)
             let user = Users()
@@ -180,10 +165,7 @@ class ViewController: UITableViewController {
             user.username = dictionary["username"] as? String
             user.email = dictionary["email"] as? String
             user.imageURL = dictionary["profileImage"] as? String
-          
-
             self.showChatController(user: user)
-            
         }, withCancel: nil)
         
         
@@ -211,10 +193,13 @@ class ViewController: UITableViewController {
             }
         }
     }
+    
 }
 
+
+
+
 extension ViewController : UNUserNotificationCenterDelegate {
-    
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         completionHandler()
@@ -248,4 +233,5 @@ extension ViewController : UNUserNotificationCenterDelegate {
     }
     
 }
+
 
