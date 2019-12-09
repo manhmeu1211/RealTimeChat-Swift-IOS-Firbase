@@ -167,6 +167,7 @@ class ChatLogController: UIViewController {
                     let recipientUserMessagesRef = Database.database().reference().child("user-message").child(toId).child(messageId)
                                     recipientUserMessagesRef.setValue(1)
                     self.txtMessage.text = ""
+                    self.heightViewSend.constant = self.txtMessage.contentSize.height + 24
                 }
           }
       }
@@ -198,7 +199,6 @@ extension ChatLogController : UITextViewDelegate {
       
       func textViewDidChange(_ textView: UITextView) {
         self.heightViewSend.constant = self.txtMessage.contentSize.height + 24
-        
     }
 }
 
@@ -242,7 +242,7 @@ extension ChatLogController: UICollectionViewDataSource, UICollectionViewDelegat
             cell.bubbleRightAnchor?.isActive = false
             cell.bubbleLeftAnchor?.isActive = true
         }
-        cell.bubbleWidthAnchor?.constant = estimateFrameForText(text: message.text!).width + 35
+        cell.bubbleWidthAnchor?.constant = estimateFrameForText(text: message.text!).width + 25
         
         return cell
     }
@@ -253,7 +253,7 @@ extension ChatLogController: UICollectionViewDataSource, UICollectionViewDelegat
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         var height : CGFloat = 80
         if let text = messages[indexPath.item].text {
-            height = estimateFrameForText(text: text).height + 30
+            height = estimateFrameForText(text: text).height + 32
         }
         return CGSize(width: view.frame.width, height: height)
     }
@@ -264,7 +264,7 @@ extension ChatLogController: UICollectionViewDataSource, UICollectionViewDelegat
     
     
     func estimateFrameForText(text: String) -> CGRect {
-        let size = CGSize(width: 200, height: 10000)
+        let size = CGSize(width: 220, height: 10000)
         let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
         return NSString(string: text).boundingRect(with: size, options: options, attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 16)], context: nil)
     }

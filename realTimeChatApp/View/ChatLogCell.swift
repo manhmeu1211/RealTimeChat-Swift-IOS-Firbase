@@ -58,7 +58,7 @@ class ChatLogCell: UICollectionViewCell {
         profileImage.widthAnchor.constraint(equalToConstant: 32).isActive = true
         profileImage.heightAnchor.constraint(equalToConstant: 32).isActive = true
         
-        bubbleRightAnchor = bubbleView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -20)
+        bubbleRightAnchor = bubbleView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -10)
         bubbleRightAnchor?.isActive = true
         
         
@@ -67,7 +67,7 @@ class ChatLogCell: UICollectionViewCell {
         bubbleView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
         
         
-        bubbleWidthAnchor = bubbleView.widthAnchor.constraint(equalToConstant: 200)
+        bubbleWidthAnchor = bubbleView.widthAnchor.constraint(equalToConstant: 220)
         bubbleWidthAnchor?.isActive = true
         bubbleView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
         
@@ -79,6 +79,7 @@ class ChatLogCell: UICollectionViewCell {
         textView.widthAnchor.constraint(equalToConstant: 200).isActive = true
         textView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
         textView.isEditable = false
+        textView.isScrollEnabled = false
     }
     
     required init?(coder: NSCoder) {
